@@ -233,7 +233,7 @@ body {
 
 .map {
     position: absolute;
-    background: var(--primaryShade);
+    background: linear-gradient(180deg, black 0%, rgb(29, 29, 29) 100%);
     box-shadow: rgba(0, 0, 0, 0.2) 0 0 90px 0;
     transition: all 0.2s;
     display: flex;
