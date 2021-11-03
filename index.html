@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="materials/style.css">
+    <title>Space Invaders</title>
+</head>
+
+<body>
+
+    <div class="uiParent">
+
+        <h3 class="uiHeader">Tick: <strong id="tick">0</strong></h3>
+
+        <h3 class="uiHeader">Generation: <strong id="generation">0</strong></h3>
+
+        <h3 class="uiHeader">Players: <strong id="players">0</strong></h3>
+
+        <h3 class="uiHeader">Most Pipes Passed: <strong id="bestScore">0</strong></h3>
+
+    </div>
+
+    <!-- Sprites -->
+
+    <img src="materials/images/player.png" alt="" class="hide" id="player">
+
+    <img src="materials/images/playerUp.png" alt="" class="hide" id="playerUp">
+
+    <img src="materials/images/playerDown.png" alt="" class="hide" id="playerDown">
+
+    <img src="materials/images/pipeTop.png" alt="" class="hide" id="pipeTop">
+
+    <img src="materials/images/pipeBottom.png" alt="" class="hide" id="pipeBottom">
+
+    <img src="materials/images/background.png" alt="" class="hide" id="background">
+
+    <!-- Canvas -->
+
+    <canvas class="map" id="map"></canvas>
+
+    <!-- JS imports -->
+
+    <script src="materials/globalVars.js"></script>
+    <script src="materials/spriteGeneration.js"></script>
+    <script src="materials/initialize.js"></script>
+    <script src="materials/index.js"></script>
+
+</body>
+
+</html>
