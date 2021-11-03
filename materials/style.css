@@ -151,14 +151,14 @@ body {
     bottom: 10px;
 }
 
-.uiParent {
+.displayParent {
     position: fixed;
     top: 10px;
     left: 10px;
     z-index: 1000;
 }
 
-.uiHeader {}
+.displayHeader {}
 
 .visualsParent {
     position: fixed;
@@ -233,7 +233,7 @@ body {
 
 .map {
     position: absolute;
-    background: linear-gradient(180deg, black 0%, rgb(29, 29, 29) 100%);
+    background: linear-gradient(180deg, black 0%, rgb(22, 22, 22) 100%);
     box-shadow: rgba(0, 0, 0, 0.2) 0 0 90px 0;
     transition: all 0.2s;
     display: flex;

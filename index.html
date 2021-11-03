@@ -10,21 +10,25 @@
 
 <body>
 
-    <div class="uiParent">
+    <!-- Display -->
 
-        <h3 class="uiHeader">Tick: <strong id="tick">0</strong></h3>
+    <div class="displayParent">
 
-        <h3 class="uiHeader">Generation: <strong id="generation">0</strong></h3>
+        <h3 class="displayHeader">Tick: <strong id="tick">0</strong></h3>
 
-        <h3 class="uiHeader">Players: <strong id="players">0</strong></h3>
+        <h3 class="displayHeader">Generation: <strong id="generation">0</strong></h3>
 
-        <h3 class="uiHeader">Most Pipes Passed: <strong id="bestScore">0</strong></h3>
+        <h3 class="displayHeader">Players: <strong id="players">0</strong></h3>
+
+        <h3 class="displayHeader">bestScore: <strong id="bestScore">0</strong></h3>
 
     </div>
 
     <!-- Sprites -->
 
     <img src="materials/images/player.png" alt="" class="hide" id="player">
+
+    <img src="materials/images/laser.png" alt="" class="hide" id="laser">
 
     <img src="materials/images/enemy.png" alt="" class="hide" id="enemy">
 
@@ -35,10 +39,12 @@
     <!-- JS imports -->
 
     <script src="materials/globalVars.js"></script>
+    <script src="materials/neuralNetwork.js"></script>
     <script src="materials/spriteGeneration.js"></script>
     <script src="materials/initialize.js"></script>
     <script src="materials/playerFunctions.js"></script>
     <script src="materials/enemyFunctions.js"></script>
+    <script src="materials/runEnv.js"></script>
     <script src="materials/index.js"></script>
 
 </body>

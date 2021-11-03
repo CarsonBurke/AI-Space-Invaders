@@ -32,8 +32,6 @@ class Sprite {
 
             this[propertyName] = opts[propertyName]
         }
-
-        //
     }
 }
 
