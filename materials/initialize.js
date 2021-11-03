@@ -7,13 +7,17 @@ function init() {
     map.el.width = mapDimensions
     map.el.height = mapDimensions
 
+    // Disable anti aliasing
+
+    map.cr.imageSmoothingEnabled = false
+
     // Dimensions / number of tiles will give size
 
     globalThis.gridSize = mapDimensions / gridPartSize
 
     // Generate sprites
 
-    createPlayer({})
+    for (let i = 0; i < 100; i++) createPlayer({})
 
     createEnemy()
 }

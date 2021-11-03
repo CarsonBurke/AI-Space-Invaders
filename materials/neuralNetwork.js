@@ -8,9 +8,9 @@ function newID() {
 }
 
 let defaults = {
-    learningRate: 0.2,
+    learningRate: 0.1,
     bias: 0,
-    lineMutation: false,
+    lineMutation: true,
 }
 
 class Line {
@@ -342,7 +342,7 @@ class NeuralNetwork {
 
         return this
     }
-    createVisuals(outputs) {
+    createVisuals(inputs, outputs) {
 
         if (this.visualsParent) return
 
@@ -416,7 +416,7 @@ class NeuralNetwork {
         }
 
         this.createLineVisuals()
-        this.createTextVisuals(outputs)
+        this.createTextVisuals(inputs, outputs)
     }
     createLineVisuals() {
 
@@ -456,7 +456,7 @@ class NeuralNetwork {
             }
         }
     }
-    createTextVisuals(outputs) {
+    createTextVisuals(inputs, outputs) {
 
         let i = 0
 
@@ -512,7 +512,7 @@ class NeuralNetwork {
 
         // Get random value influenced by learning rate
 
-        let value = Math.random() * 5 / this.learningRate
+        let value = Math.random() * 0.6
 
         // Stop if value is more than 1
 
@@ -605,7 +605,7 @@ class NeuralNetwork {
     }
     init(inputs, outputs) {
 
-        this.createVisuals(outputs)
+        this.createVisuals(inputs, outputs)
 
         for (const layerName in this.layers) {
 
@@ -637,7 +637,7 @@ class NeuralNetwork {
             }
         }
     }
-    clone(inputs) {
+    clone(inputs, outputs) {
 
         // Create new neural net
 
@@ -668,7 +668,7 @@ class NeuralNetwork {
 
         // Initialize newNetwork
 
-        newNetwork.init(inputs)
+        newNetwork.init(inputs, outputs)
 
         // Assign line properties to newNetwork
 

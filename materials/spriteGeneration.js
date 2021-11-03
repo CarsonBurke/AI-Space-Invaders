@@ -12,6 +12,13 @@ class Sprite {
 
         this.id = newId()
 
+        // Designate hitboxes
+
+        this.top = this.y
+        this.left = this.x
+        this.bottom = this.y + this.height
+        this.right = this.x + this.width
+
         //
 
         if (!objects[this.type]) objects[this.type] = {}
@@ -26,12 +33,19 @@ class Sprite {
     }
     move(opts) {
 
-        //
+        // Assign opts
 
         for (let propertyName in opts) {
 
             this[propertyName] = opts[propertyName]
         }
+
+        // Designate hitboxes
+
+        this.top = this.y
+        this.left = this.x
+        this.bottom = this.y + this.height
+        this.right = this.x + this.width
     }
 }
 
@@ -58,7 +72,6 @@ function createPlayer(opts) {
         width: 45,
         height: 50,
         image: document.getElementById("player"),
-        outOfBoundsAction: 'stop',
         score: 0,
         network: opts.network || undefined
     }).draw()
@@ -66,13 +79,30 @@ function createPlayer(opts) {
 
 function createEnemy() {
 
+    let value
+
+    // While value isn't defined
+
+    while (!value) {
+
+        // Assign value a random number
+
+        value = Math.random()
+
+        // If number is not ideal, try again
+
+        if (value > 0.9 || value < 0.1) value = undefined
+    }
+
+    const width = 36
+    const height = 27
+
     new Enemy({
         type: "enemy",
-        x: map.el.width * 0.5,
+        x: map.el.width * value - width * 0.5,
         y: 20,
-        width: 36,
-        height: 27,
+        width: width,
+        height: height,
         image: document.getElementById("enemy"),
-        outOfBoundsAction: 'reproduce',
     }).draw()
 }

@@ -3,6 +3,10 @@ let displayGeneration = 0
 let displayPlayers = 0
 let displayBestScore = 0
 
+let tick = 0
+let lastReset = 0
+let enemyWon
+
 function findBestPlayer(players) {
 
     // Sort player by score and return first in assortment
@@ -11,26 +15,85 @@ function findBestPlayer(players) {
     return bestPlayers[0]
 }
 
+function reproduce(bestPlayer) {
+
+    // Record stats
+
+    displayGeneration++
+    lastReset = 0
+    enemyWon = false
+
+    // Delete all game objects
+
+    for (let type in objects) {
+
+        if (type == 'background') continue
+
+        for (let objectID in objects[type]) {
+
+            const object = objects[type][objectID]
+
+            if (type == 'player' && object.id != bestPlayer.id) {
+
+                object.kill()
+                continue
+            }
+
+            delete objects[type][objectID]
+        }
+    }
+
+    // Create new players
+
+    for (let i = 0; i < 100; i++) {
+
+        const duplicateNetwork = bestPlayer.network.clone(bestPlayer.inputs, bestPlayer.outputs)
+
+        createPlayer({ network: duplicateNetwork })
+    }
+
+    // Kill bestPlayer
+
+    bestPlayer.kill()
+
+    // Create an enemy
+
+    createEnemy()
+}
+
 function run(tickSpeed) {
 
     setInterval(runTick, tickSpeed)
 
     function runTick() {
 
-        runBatch()
+        tick++
+        lastReset++
 
-        moveEnemies()
+        displayTick = tick
+
+        runPlayers()
+
+        runEnemies()
+
+        updateObjectPositions()
+
+        updateDisplay()
     }
-    function runBatch() {
+    function runPlayers() {
 
         const players = Object.values(objects.player)
         const playerCount = players.length
 
+        let noEnemies
+
+        displayPlayers = playerCount
+
         for (const player of players) {
 
-            // Stop loop if there is only 1 player left
+            // Iterate if there are no enemies
 
-            if (Object.keys(objects.player) == 1) break
+            if (Object.keys(objects.enemy).length == 0) continue
 
             // Find closest enemy
 
@@ -44,12 +107,14 @@ function run(tickSpeed) {
                 { name: 'Closest enemy  X', value: closestEnemy.x },
                 { name: 'Closest enemy Y', value: closestEnemy.y },
             ]
+            player.inputs = inputs
             
             const outputs = [
                 { name: 'Shoot' },
                 { name: 'Move left' },
                 { name: 'Move right' },
-            ]       
+            ]
+            player.outputs = outputs     
             
             // Create network if player doesn't have one
 
@@ -73,11 +138,14 @@ function run(tickSpeed) {
 
                 // Iterate if output is 0
 
-                if (perceptron.activateValue == 0) continue
+                if (perceptron.activateValue > 0) {
 
-                // Take action connected to output
-
-                player.options[i]()
+                    // Take action connected to output
+                    
+                    if (i == 0) player.shoot()
+                    if (i == 1) player.moveLeft()
+                    if (i == 2) player.moveRight()
+                }
 
                 // Record iteration
 
@@ -95,34 +163,80 @@ function run(tickSpeed) {
 
         // Update score if player's score is best
 
-        if (bestPlayer.score > bestScore) bestScore = bestPlayer.score
+        if (bestPlayer.score > displayBestScore) displayBestScore = bestPlayer.score
 
         // Show player's visuals
-
+        
         bestPlayer.network.visualsParent.classList.add("visualsParentShow")
 
         // Update player's visuals
 
         bestPlayer.network.updateVisuals()
 
-        // If there is only 1 player left
+        // If there is only 1 player left, reproduce with bestPlayer
 
-        if (players.length == 1) {
-
-            // Reproduce with player
-
-            reproduce(bestPlayer, tick)
-        }
+        if (enemyWon) reproduce(bestPlayer)
     }
-    function moveEnemies() {
+    function runEnemies() {
+
+        for (let i = 0; i < lastReset / 1000; i++) createEnemy()
 
         for (const enemy of Object.values(objects.enemy)) {
 
+            // Move enemy
+
             enemy.moveDown()
+
+            // Kill enemy if out of bounds
+            
+            if (enemy.bottom >= map.el.height) {
+
+                enemy.kill()
+                enemyWon = true
+            }
+        } 
+    }
+    function updateObjectPositions() {
+
+        // Store the current transformation matrix
+
+        map.cr.save()
+
+        // Use the identity matrix while clearing the canvas
+
+        map.cr.setTransform(1, 0, 0, 1, 0, 0)
+        map.cr.clearRect(0, 0, map.el.width, map.el.height)
+
+        // Restore the transform
+
+        map.cr.restore()
+
+        // Re-draw everything
+
+        for (let type in objects) {
+    
+            for (let id in objects[type]) {
+    
+                let object = objects[type][id]
+    
+                object.draw()
+            }
         }
     }
     function updateDisplay() {
 
+        let el
 
+        el = document.getElementById('tick')
+        el.innerText = displayTick
+
+        el = document.getElementById('generation')
+        el.innerText = displayGeneration
+
+        el = document.getElementById('players')
+        el.innerText = displayPlayers
+
+        el = document.getElementById('bestScore')
+        el.innerText = displayBestScore
     }
 }

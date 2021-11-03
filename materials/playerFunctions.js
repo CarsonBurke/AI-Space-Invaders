@@ -2,6 +2,11 @@ Player.prototype.shoot = function() {
 
     const player = this
 
+    player.findClosestEnemy().kill()
+    player.score += 1
+
+    return
+
     new Player({
         type: "laser",
         x: map.el.width * 0.5,
@@ -17,14 +22,18 @@ Player.prototype.moveLeft = function() {
 
     const player = this
 
+    if (player.left == 0) return
+
     player.move({
-        x: player.x -= 1  
+        x: player.x -= 1
     })
 }
 
 Player.prototype.moveRight = function() {
 
     const player = this
+
+    if (player.right == map.el.width) return
 
     player.move({
         x: player.x += 1  
@@ -41,7 +50,7 @@ Player.prototype.createNetwork = function(inputs, outputs) {
 
     // Create layers
     
-    const layerCount = 3
+    const layerCount = 2
     
     for (let i = 0; i < layerCount; i++) network.addLayer({})
     
@@ -98,12 +107,15 @@ Player.prototype.findClosestEnemy = function() {
 
     const enemies = Object.values(objects.enemy)
 
-    const closestEnemies = enemies.sort(function(a, b) { player.findClosestEnemy(a) - player.findClosestEnemy(b) })
+    const closestEnemies = enemies.sort(function(a, b) { player.findDistanceFrom(a) - player.findDistanceFrom(b) })
     return closestEnemies[0]
 }
 
-Player.options = [
-    Player.shoot,
-    Player.moveLeft,
-    Player.moveRight
-]
+Player.prototype.kill = function() {
+
+    const player = this
+
+    player.network.visualsParent.remove()
+
+    delete objects[player.type][player.id]
+}
