@@ -37,9 +37,23 @@ class Sprite {
     }
 }
 
+class Player extends Sprite {
+    constructor(opts) {
+
+        super(opts)
+    }
+}
+
+class Enemy extends Sprite {
+    constructor(opts) {
+        
+        super(opts)
+    }
+}
+
 function createPlayer(opts) {
 
-    new Sprite({
+    new Player({
         type: "player",
         x: map.el.width * 0.5,
         y: map.el.height - 55,
@@ -54,7 +68,7 @@ function createPlayer(opts) {
 
 function createEnemy() {
 
-    new Sprite({
+    new Enemy({
         type: "enemy",
         x: map.el.width * 0.5,
         y: 20,
