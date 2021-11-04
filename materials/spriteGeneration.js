@@ -72,27 +72,12 @@ class Laser extends Sprite {
 
 function createPlayer(opts) {
 
-    let value
-
-    // While value isn't defined
-
-    while (!value) {
-
-        // Assign value a random number
-
-        value = Math.random()
-
-        // If number is not ideal, try again
-
-        if (value > 0.6 || value < 0.4) value = undefined
-    }
-
     const width = 45
     const height = 50
 
     new Player({
         type: "player",
-        x: map.el.width * value - width * 0.5,
+        x: map.el.width * 0.5 - width * 0.5,
         y: map.el.height - 55,
         width: width,
         height: height,

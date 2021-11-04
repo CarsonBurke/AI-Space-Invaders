@@ -8,8 +8,8 @@ Player.prototype.shoot = function(tick) {
 
     // Create laser
 
-    const width = 10
-    const height = 30
+    const width = 20
+    const height = 90
 
     new Laser({
         type: 'laser',
@@ -59,7 +59,7 @@ Player.prototype.createNetwork = function(inputs, outputs) {
 
     // Create layers
 
-    const layerCount = 2
+    const layerCount = 3
 
     for (let i = 0; i < layerCount; i++) network.addLayer({})
 
@@ -116,7 +116,8 @@ Player.prototype.findClosestEnemy = function() {
 
     const enemies = Object.values(objects.enemy)
 
-    const closestEnemies = enemies.sort(function(a, b) { player.findDistanceFrom(a) - player.findDistanceFrom(b) })
+    /* const closestEnemies = enemies.sort(function(a, b) { player.findDistanceFrom(a) - player.findDistanceFrom(b) }) */
+    const closestEnemies = enemies.sort(function(a, b) { a.bottom - b.bottom })
     return closestEnemies[0]
 }
 

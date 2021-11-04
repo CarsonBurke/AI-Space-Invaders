@@ -23,9 +23,13 @@ Laser.prototype.canKillEnemy = function() {
         // If laser is inside enemy
 
         if (laser.top <= enemy.bottom &&
-            laser.top >= enemy.top &&
-            laser.left <= enemy.right &&
-            laser.left >= enemy.left) {
+            laser.right >= enemy.left &&
+            laser.left <= enemy.right) {
+
+            // Add to laser's player's score
+
+            const player = objects.player[laser.playerID]
+            player.score += 1
 
             // Kill enemy
 
@@ -34,11 +38,6 @@ Laser.prototype.canKillEnemy = function() {
             // Delete laser
 
             laser.delete()
-
-            // Add to laser's player's score
-
-            const player = objects.player[laser.playerID]
-            player.score += 1
 
             break
         }

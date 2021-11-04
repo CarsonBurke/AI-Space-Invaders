@@ -107,10 +107,8 @@ function run(tickSpeed) {
             // Define inputs and outputs
 
             const inputs = [
-                { name: 'Player X', value: player.x + player.width / 2 },
-                { name: 'Player Y', value: player.x + player.height / 2 },
-                { name: 'Closest enemy  X', value: closestEnemy.left + closestEnemy.width / 2 },
-                { name: 'Closest enemy Y', value: closestEnemy.top + closestEnemy.height / 2 },
+                { name: 'Player X', value: player.left - player.width / 2 },
+                { name: 'Closest enemy  X', value: closestEnemy.left - closestEnemy.width / 2 },
             ]
             player.inputs = inputs
 
