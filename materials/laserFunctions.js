@@ -41,4 +41,25 @@ Laser.prototype.canKillEnemy = function() {
             break
         }
     }
+
+    // 
+
+    for (const fireball of Object.values(objects.fireball)) {
+
+        // If laser is inside fireball
+
+        if (laser.top <= fireball.bottom &&
+            laser.right >= fireball.left &&
+            laser.left <= fireball.right) {
+
+            // Kill fireball
+
+            fireball.delete()
+
+            // Delete laser
+
+            laser.delete()
+            break
+        }
+    }
 }

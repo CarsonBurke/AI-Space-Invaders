@@ -9,7 +9,7 @@ Player.prototype.shoot = function(tick) {
     // Create laser
 
     const width = 6
-    const height = 60
+    const height = 30
 
     new Laser({
         type: 'laser',
