@@ -90,7 +90,7 @@ function createPlayer(opts) {
         height: height,
         image: document.getElementById("player"),
         score: 0,
-        shootDelay: 25 / speedMultiplier,
+        shootDelay: 300 / speedMultiplier,
         lastShot: 100,
         network: opts.network || undefined
     }).draw()

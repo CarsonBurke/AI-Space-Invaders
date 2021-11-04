@@ -19,7 +19,7 @@ Player.prototype.shoot = function(tick) {
         height: height,
         image: document.getElementById('laser'),
         player: player,
-        speed: 2 * speedMultiplier,
+        speed: 2,
     }).draw()
 
     // Record that there was recently a shot
@@ -34,7 +34,7 @@ Player.prototype.moveLeft = function() {
     if (player.left <= 10) return
 
     player.move({
-        x: player.x -= 1 * speedMultiplier
+        x: player.x -= 1
     })
 }
 
@@ -45,7 +45,7 @@ Player.prototype.moveRight = function() {
     if (player.right >= map.el.width - 10) return
 
     player.move({
-        x: player.x += 1 * speedMultiplier
+        x: player.x += 1
     })
 }
 

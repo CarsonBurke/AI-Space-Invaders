@@ -3,7 +3,7 @@ Enemy.prototype.moveDown = function() {
     const enemy = this
 
     enemy.move({
-        y: enemy.y + enemy.speed * speedMultiplier
+        y: enemy.y + enemy.speed
     })
 }
 
@@ -27,7 +27,7 @@ Enemy.prototype.shoot = function() {
         width: width,
         height: height,
         image: document.getElementById('fireball'),
-        speed: 1 * speedMultiplier,
+        speed: 1,
     }).draw()
 
     // Record that there was recently a shot
