@@ -14,7 +14,7 @@ Player.prototype.shoot = function(tick) {
     new Laser({
         type: 'laser',
         x: player.left + player.width * 0.5 - width / 2,
-        y: player.top - height,
+        y: player.top - height + 15,
         width: width,
         height: height,
         image: document.getElementById('laser'),
@@ -59,7 +59,7 @@ Player.prototype.createNetwork = function(inputs, outputs) {
 
     // Create layers
 
-    const layerCount = 3
+    const layerCount = 2
 
     for (let i = 0; i < layerCount; i++) network.addLayer({})
 

@@ -3,7 +3,7 @@
 let properties = {
     mapDimensions: 700,
     gridPartSize: 25,
-    flapDelay: 80,
+    requiredPlayers: 100,
     nextId: 0,
     speedMultiplier: 4,
     map: {
