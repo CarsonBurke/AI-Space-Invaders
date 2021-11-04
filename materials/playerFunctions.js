@@ -31,10 +31,10 @@ Player.prototype.moveLeft = function() {
 
     const player = this
 
-    if (player.left == 10) return
+    if (player.left <= 10) return
 
     player.move({
-        x: player.x -= 1
+        x: player.x -= 1 * speedMultiplier
     })
 }
 
@@ -42,10 +42,10 @@ Player.prototype.moveRight = function() {
 
     const player = this
 
-    if (player.right == map.el.width - 10) return
+    if (player.right >= map.el.width - 10) return
 
     player.move({
-        x: player.x += 1
+        x: player.x += 1 * speedMultiplier
     })
 }
 

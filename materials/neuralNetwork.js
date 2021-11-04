@@ -123,7 +123,7 @@ class Perceptron {
             let previousLayerPerceptronCount = Object.keys(previousLayer.perceptrons).length
 
             // Change iterations to number of perceptrons in previous layer
-            
+
             iterations += previousLayerPerceptronCount
         }
 
@@ -136,7 +136,7 @@ class Perceptron {
             let value = Math.random() * this.network.learningRate
 
             // Add value to weights
-            
+
             this.weights.push(value)
         }
     }
@@ -151,11 +151,11 @@ class Perceptron {
         for (const input of this.inputs) {
 
             // Find weight corresponding to input
-            
+
             const weight = this.weights[i]
-            
+
             // Assign weight to input and add value to weightResults
-            
+
             this.weightResults.push(input * weight)
 
             i++
@@ -176,7 +176,7 @@ class Perceptron {
         this.inputs = inputs
 
         // Run commands to take inputs into an end result
-        
+
         this.updateWeights()
 
         this.transfer()
@@ -289,7 +289,7 @@ class NeuralNetwork {
 
                 newInputs.push(0)
             }
-            
+
             return newInputs
         }
 
@@ -525,7 +525,7 @@ class NeuralNetwork {
         // Enable line if 0
 
         if (boolean == 0) {
-            
+
             // Stop if line is already connected
 
             if (line.connected) return
@@ -658,10 +658,10 @@ class NeuralNetwork {
             for (const perceptronName in layer.perceptrons) {
 
                 const perceptron = layer.perceptrons[perceptronName]
-                
+
                 newLayer.addPerceptron()
                 const newPerceptron = newLayer.perceptrons[perceptronName]
-                
+
                 newPerceptron.weights = perceptron.weights
             }
         }
@@ -689,7 +689,7 @@ class NeuralNetwork {
                 const newLayerLineID = Object.keys(newLayer.lines)[i]
 
                 // Assign line property to newNetwork's adjacent line
-                
+
                 newLayer.lines[newLayerLineID].connected = line.connected
 
                 //

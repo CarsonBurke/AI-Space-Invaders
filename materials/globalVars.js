@@ -5,10 +5,9 @@ let properties = {
     gridPartSize: 25,
     flapDelay: 80,
     nextId: 0,
-    gapHeight: 130,
+    speedMultiplier: 4,
     map: {
         el: document.getElementById("map"),
-        positions: [],
     },
     colors: {
         red: "#b51818",

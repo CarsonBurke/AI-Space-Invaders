@@ -3,7 +3,7 @@ Laser.prototype.moveUp = function() {
     const laser = this
 
     laser.move({
-        y: laser.y -= laser.speed,
+        y: laser.y -= laser.speed * speedMultiplier
     })
 }
 
@@ -26,8 +26,6 @@ Laser.prototype.canKillEnemy = function() {
             laser.top >= enemy.top &&
             laser.left <= enemy.right &&
             laser.left >= enemy.left) {
-
-            console.log('kill')
 
             // Kill enemy
 

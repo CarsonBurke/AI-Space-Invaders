@@ -6,6 +6,8 @@ let displayBestScore = 0
 let tick = 0
 let lastReset = 0
 let enemyWon
+let enemySpawnDelay = 100
+let lastEnemySpawn = 0
 
 function findBestPlayer(players) {
 
@@ -45,11 +47,11 @@ function reproduce(bestPlayer) {
 
     // Create new players
 
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < 50; i++) {
 
         const duplicateNetwork = bestPlayer.network.clone(bestPlayer.inputs, bestPlayer.outputs)
 
-        createPlayer({ network: duplicateNetwork })
+        createPlayer({ network: duplicateNetwork.learn() })
     }
 
     // Kill bestPlayer
@@ -105,10 +107,10 @@ function run(tickSpeed) {
             // Define inputs and outputs
 
             const inputs = [
-                { name: 'Player X', value: player.x },
-                { name: 'Player Y', value: player.x },
-                { name: 'Closest enemy  X', value: closestEnemy.x },
-                { name: 'Closest enemy Y', value: closestEnemy.y },
+                { name: 'Player X', value: player.x + player.width / 2 },
+                { name: 'Player Y', value: player.x + player.height / 2 },
+                { name: 'Closest enemy  X', value: closestEnemy.left + closestEnemy.width / 2 },
+                { name: 'Closest enemy Y', value: closestEnemy.top + closestEnemy.height / 2 },
             ]
             player.inputs = inputs
 
@@ -195,7 +197,11 @@ function run(tickSpeed) {
 
     function runEnemies() {
 
-        for (let i = 0; i < lastReset / 1000; i++) createEnemy()
+        if (tick - (lastEnemySpawn - enemySpawnDelay / lastReset) - enemySpawnDelay > 0) {
+
+            createEnemy()
+            lastEnemySpawn = tick
+        }
 
         for (const enemy of Object.values(objects.enemy)) {
 
