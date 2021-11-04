@@ -16,14 +16,18 @@ Laser.prototype.delete = function() {
 
 Laser.prototype.canKillEnemy = function() {
 
+    const laser = this
+
     for (const enemy of Object.values(objects.enemy)) {
 
         // If laser is inside enemy
 
-        if (laser.bottom <= enemy.top &&
-            laser.top >= enemy.bottom &&
-            laser.right >= enemy.left &&
-            laser.left <= enemy.right) {
+        if (laser.top <= enemy.bottom &&
+            laser.top >= enemy.top &&
+            laser.left <= enemy.right &&
+            laser.left >= enemy.left) {
+
+            console.log('kill')
 
             // Kill enemy
 
