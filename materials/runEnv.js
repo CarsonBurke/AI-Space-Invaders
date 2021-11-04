@@ -85,13 +85,13 @@ function run(tickSpeed) {
             const playerCount = players.length
 
             // Find enemies
-
-            const closestEnemies = Object.values(objects.enemy).sort((a, b) => a.bottom - b.bottom)
+            const enemies = Object.values(objects.enemy)
+            const closestEnemies = enemies.sort((a, b) => a.bottom - b.bottom)
             const closestEnemy = closestEnemies[closestEnemies.length - 1]
 
             // Find fireballs
-
-            const closestFireballs = Object.values(objects.fireball).sort((a, b) => a.bottom - b.bottom)
+            const fireballs = Object.values(objects.fireball)
+            const closestFireballs = fireballs.sort((a, b) => a.bottom - b.bottom)
             const closestFireball = closestFireballs[closestFireballs.length - 1]
 
             //
@@ -176,7 +176,7 @@ function run(tickSpeed) {
 
                         // Check if there is a fireball inside the player
 
-                        player.isDead()
+                        player.isDead(fireballs)
                     }
 
                     // Hide player's visualsParent
@@ -213,7 +213,7 @@ function run(tickSpeed) {
 
                     laser.moveUp()
 
-                    laser.canKillEnemy()
+                    laser.canKillEnemy(enemies, fireballs)
 
                     if (laser.bottom <= 0) laser.delete()
                 }
@@ -231,18 +231,11 @@ function run(tickSpeed) {
                     spawnedEnemies++
                 }
 
-                for (const enemy of Object.values(objects.enemy)) {
+                for (const enemy of enemies) {
 
                     // Move enemy
 
                     enemy.moveDown()
-
-                    // Restart if out of bounds
-
-                    if (enemy.bottom >= map.el.height) {
-
-                        enemyWon = true
-                    }
                 }
 
                 // Find closest few enemies
@@ -252,6 +245,13 @@ function run(tickSpeed) {
                 // Loop through enemies of closestFewEnemies
 
                 for (const enemy of closestFewEnemies) {
+
+                    // If the enemy reaches the bottom of the map, inform to restart
+
+                    if (enemy.bottom >= map.el.height) {
+
+                        enemyWon = true
+                    }
 
                     // Try to shoot a fireball
 
@@ -263,7 +263,7 @@ function run(tickSpeed) {
 
             function runFireballs() {
 
-                for (const fireball of Object.values(objects.fireball)) {
+                for (const fireball of fireballs) {
 
                     fireball.moveUp()
 

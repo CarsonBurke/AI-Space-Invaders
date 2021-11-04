@@ -14,11 +14,11 @@ Laser.prototype.delete = function() {
     delete objects[laser.type][laser.id]
 }
 
-Laser.prototype.canKillEnemy = function() {
+Laser.prototype.canKillEnemy = function(enemies, fireballs) {
 
     const laser = this
 
-    for (const enemy of Object.values(objects.enemy)) {
+    for (const enemy of enemies) {
 
         // If laser is inside enemy
 
@@ -44,7 +44,7 @@ Laser.prototype.canKillEnemy = function() {
 
     // 
 
-    for (const fireball of Object.values(objects.fireball)) {
+    for (const fireball of fireballs) {
 
         // If laser is inside fireball
 

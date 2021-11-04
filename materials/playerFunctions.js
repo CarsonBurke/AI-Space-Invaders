@@ -111,11 +111,11 @@ Player.prototype.kill = function() {
     delete objects[player.type][player.id]
 }
 
-Player.prototype.isDead = function() {
+Player.prototype.isDead = function(fireballs) {
 
     const player = this
 
-    for (const fireball of Object.values(objects.fireball)) {
+    for (const fireball of fireballs) {
 
         // If fireball is inside player
 

@@ -18,8 +18,4 @@ function init() {
     // Generate sprites
 
     for (let i = 0; i < requiredPlayers; i++) createPlayer({})
-
-    //
-
-    objects.laser = {}
 }
