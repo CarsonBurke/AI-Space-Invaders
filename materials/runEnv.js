@@ -107,8 +107,8 @@ function run(tickSpeed) {
             // Define inputs and outputs
 
             const inputs = [
-                { name: 'Player X', value: player.left - player.width / 2 },
-                { name: 'Closest enemy  X', value: closestEnemy.left - closestEnemy.width / 2 },
+                { name: 'Player x', value: player.left - player.width / 2 },
+                { name: 'Closest enemy  x', value: closestEnemy.left - closestEnemy.width / 2 },
             ]
             player.inputs = inputs
 
@@ -174,7 +174,7 @@ function run(tickSpeed) {
 
         // Find best player
 
-        const bestPlayer = findBestPlayer(players)
+        const bestPlayer = findBestPlayer(Object.values(objects.player))
 
         // Update score if player's score is best
 

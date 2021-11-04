@@ -28,8 +28,7 @@ Laser.prototype.canKillEnemy = function() {
 
             // Add to laser's player's score
 
-            const player = objects.player[laser.playerID]
-            player.score += 1
+            laser.player.score += 1
 
             // Kill enemy
 

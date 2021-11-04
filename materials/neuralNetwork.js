@@ -10,7 +10,7 @@ function newID() {
 let defaults = {
     learningRate: 0.1,
     bias: 0,
-    lineMutation: false,
+    lineMutation: true,
 }
 
 class Line {
@@ -512,7 +512,7 @@ class NeuralNetwork {
 
         // Get random value influenced by learning rate
 
-        let value = Math.random() * 0.6
+        let value = Math.random() * 5
 
         // Stop if value is more than 1
 

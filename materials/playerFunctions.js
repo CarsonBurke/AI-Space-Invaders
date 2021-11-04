@@ -8,7 +8,7 @@ Player.prototype.shoot = function(tick) {
 
     // Create laser
 
-    const width = 20
+    const width = 5
     const height = 90
 
     new Laser({
@@ -18,7 +18,7 @@ Player.prototype.shoot = function(tick) {
         width: width,
         height: height,
         image: document.getElementById('laser'),
-        playerID: player.id,
+        player: player,
         speed: 2,
     }).draw()
 
@@ -116,7 +116,6 @@ Player.prototype.findClosestEnemy = function() {
 
     const enemies = Object.values(objects.enemy)
 
-    /* const closestEnemies = enemies.sort(function(a, b) { player.findDistanceFrom(a) - player.findDistanceFrom(b) }) */
     const closestEnemies = enemies.sort(function(a, b) { a.bottom - b.bottom })
     return closestEnemies[0]
 }
