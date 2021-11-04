@@ -76,10 +76,13 @@ function run(tickSpeed) {
 
         runEnemies()
 
+        runLasers()
+
         updateObjectPositions()
 
         updateDisplay()
     }
+
     function runPlayers() {
 
         const players = Object.values(objects.player)
@@ -108,14 +111,14 @@ function run(tickSpeed) {
                 { name: 'Closest enemy Y', value: closestEnemy.y },
             ]
             player.inputs = inputs
-            
+
             const outputs = [
                 { name: 'Shoot' },
                 { name: 'Move left' },
                 { name: 'Move right' },
             ]
-            player.outputs = outputs     
-            
+            player.outputs = outputs
+
             // Create network if player doesn't have one
 
             if (!player.network) player.createNetwork(inputs, outputs)
@@ -141,10 +144,22 @@ function run(tickSpeed) {
                 if (perceptron.activateValue > 0) {
 
                     // Take action connected to output
-                    
-                    if (i == 0) player.shoot()
-                    if (i == 1) player.moveLeft()
-                    if (i == 2) player.moveRight()
+
+                    if (i == 0) {
+
+                        player.shoot(tick)
+                        continue
+                    }
+                    if (i == 1) {
+
+                        player.moveLeft()
+                        continue
+                    }
+                    if (i == 2) {
+
+                        player.moveRight()
+                        continue
+                    }
                 }
 
                 // Record iteration
@@ -166,7 +181,7 @@ function run(tickSpeed) {
         if (bestPlayer.score > displayBestScore) displayBestScore = bestPlayer.score
 
         // Show player's visuals
-        
+
         bestPlayer.network.visualsParent.classList.add("visualsParentShow")
 
         // Update player's visuals
@@ -177,6 +192,7 @@ function run(tickSpeed) {
 
         if (enemyWon) reproduce(bestPlayer)
     }
+
     function runEnemies() {
 
         for (let i = 0; i < lastReset / 1000; i++) createEnemy()
@@ -188,14 +204,27 @@ function run(tickSpeed) {
             enemy.moveDown()
 
             // Kill enemy if out of bounds
-            
+
             if (enemy.bottom >= map.el.height) {
 
                 enemy.kill()
                 enemyWon = true
             }
-        } 
+        }
     }
+
+    function runLasers() {
+
+        for (const laser of Object.values(objects.laser)) {
+
+            laser.moveUp()
+
+            laser.canKillEnemy()
+
+            if (laser.top <= 0) laser.delete()
+        }
+    }
+
     function updateObjectPositions() {
 
         // Store the current transformation matrix
@@ -214,15 +243,16 @@ function run(tickSpeed) {
         // Re-draw everything
 
         for (let type in objects) {
-    
+
             for (let id in objects[type]) {
-    
+
                 let object = objects[type][id]
-    
+
                 object.draw()
             }
         }
     }
+
     function updateDisplay() {
 
         let el

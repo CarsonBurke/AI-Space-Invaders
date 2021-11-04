@@ -28,7 +28,7 @@ class Sprite {
         objects[this.type][this.id] = this
     }
     draw() {
-        
+
         map.cr.drawImage(this.image, this.x, this.y, this.width, this.height)
     }
     move(opts) {
@@ -58,7 +58,14 @@ class Player extends Sprite {
 
 class Enemy extends Sprite {
     constructor(opts) {
-        
+
+        super(opts)
+    }
+}
+
+class Laser extends Sprite {
+    constructor(opts) {
+
         super(opts)
     }
 }
@@ -73,6 +80,8 @@ function createPlayer(opts) {
         height: 50,
         image: document.getElementById("player"),
         score: 0,
+        shootDelay: 200,
+        lastShot: 0,
         network: opts.network || undefined
     }).draw()
 }
@@ -104,5 +113,6 @@ function createEnemy() {
         width: width,
         height: height,
         image: document.getElementById("enemy"),
+        speed: Math.max(Math.random(), 0.2),
     }).draw()
 }

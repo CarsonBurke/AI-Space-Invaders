@@ -17,7 +17,11 @@ function init() {
 
     // Generate sprites
 
-    for (let i = 0; i < 100; i++) createPlayer({})
+    for (let i = 0; i < 1; i++) createPlayer({})
 
     createEnemy()
+
+    //
+
+    objects.laser = {}
 }

@@ -1,28 +1,37 @@
-Player.prototype.shoot = function() {
+Player.prototype.shoot = function(tick) {
 
     const player = this
 
-    player.findClosestEnemy().kill()
-    player.score += 1
+    // Stop if shooting is on cooldown
 
-    return
+    if (player.lastShot - tick + player.shootDelay >= 0) return
 
-    new Player({
-        type: "laser",
-        x: map.el.width * 0.5,
-        y: map.el.height - 55,
-        width: 5,
-        height: 15,
-        image: document.getElementById("laser"),
-        outOfBoundsAction: 'delete',
+    // Create laser
+
+    const width = 10
+    const height = 30
+
+    new Laser({
+        type: 'laser',
+        x: player.left + player.width * 0.5 - width / 2,
+        y: player.top - height,
+        width: width,
+        height: height,
+        image: document.getElementById('laser'),
+        playerID: player.id,
+        speed: 2,
     }).draw()
+
+    // Record that there was recently a shot
+
+    player.lastShot = tick
 }
 
 Player.prototype.moveLeft = function() {
 
     const player = this
 
-    if (player.left == 0) return
+    if (player.left == 10) return
 
     player.move({
         x: player.x -= 1
@@ -33,10 +42,10 @@ Player.prototype.moveRight = function() {
 
     const player = this
 
-    if (player.right == map.el.width) return
+    if (player.right == map.el.width - 10) return
 
     player.move({
-        x: player.x += 1  
+        x: player.x += 1
     })
 }
 
@@ -49,43 +58,43 @@ Player.prototype.createNetwork = function(inputs, outputs) {
     const network = new NeuralNetwork()
 
     // Create layers
-    
+
     const layerCount = 2
-    
+
     for (let i = 0; i < layerCount; i++) network.addLayer({})
-    
+
     // Create perceptrons
-    
+
     // Create input perceptrons
-    
+
     for (let i = 0; i < inputs.length; i++) network.layers[0].addPerceptron()
-    
+
     // Create hidden perceptrons
-    
+
     const hiddenPerceptronsNeed = 5
-    
+
     // Loop through layers
-    
+
     for (const layerName in network.layers) {
-    
+
         // Filter only hidden layers
-    
+
         const layersCount = Object.keys(network.layers).length
-    
+
         if (layerName > 0 && layerName < layersCount - 1) {
-    
+
             const layer = network.layers[layerName]
-    
+
             for (let i = 0; i < hiddenPerceptronsNeed; i++) layer.addPerceptron()
         }
     }
-    
+
     // Create output perceptrons
-    
+
     for (let i = 0; i < outputs.length; i++) network.layers[layerCount - 1].addPerceptron()
-    
+
     // Initialize network
-    
+
     network.init(inputs, outputs)
 
     // Add network to player
