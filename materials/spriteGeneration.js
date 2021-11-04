@@ -56,6 +56,13 @@ class Player extends Sprite {
     }
 }
 
+class Laser extends Sprite {
+    constructor(opts) {
+
+        super(opts)
+    }
+}
+
 class Enemy extends Sprite {
     constructor(opts) {
 
@@ -63,7 +70,7 @@ class Enemy extends Sprite {
     }
 }
 
-class Laser extends Sprite {
+class Fireball extends Sprite {
     constructor(opts) {
 
         super(opts)
@@ -83,39 +90,31 @@ function createPlayer(opts) {
         height: height,
         image: document.getElementById("player"),
         score: 0,
-        shootDelay: 100,
-        lastShot: 0,
+        shootDelay: 100 / speedMultiplier,
+        lastShot: 100,
         network: opts.network || undefined
     }).draw()
 }
 
 function createEnemy() {
 
-    let value
-
-    // While value isn't defined
-
-    while (!value) {
-
-        // Assign value a random number
-
-        value = Math.random()
-
-        // If number is not ideal, try again
-
-        if (value > 0.9 || value < 0.1) value = undefined
-    }
-
     const width = 36
     const height = 27
 
+    let x = Math.random() * map.el.width
+
+    x = Math.max(width, x)
+    x = Math.min(x - width, x)
+
     new Enemy({
         type: "enemy",
-        x: map.el.width * value - width * 0.5,
-        y: 20,
+        x: x,
+        y: 0,
         width: width,
         height: height,
         image: document.getElementById("enemy"),
-        speed: Math.max(Math.random(), 0.05) * 0.3,
+        speed: Math.max(Math.random(), 0.01) * 0.05,
+        shootDelay: Math.max(5000, Math.random() * 12500) / speedMultiplier,
+        lastShot: 100,
     }).draw()
 }

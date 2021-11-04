@@ -8,8 +8,8 @@ Player.prototype.shoot = function(tick) {
 
     // Create laser
 
-    const width = 5
-    const height = 90
+    const width = 6
+    const height = 60
 
     new Laser({
         type: 'laser',
@@ -19,7 +19,7 @@ Player.prototype.shoot = function(tick) {
         height: height,
         image: document.getElementById('laser'),
         player: player,
-        speed: 2,
+        speed: 2 * speedMultiplier,
     }).draw()
 
     // Record that there was recently a shot
@@ -59,7 +59,7 @@ Player.prototype.createNetwork = function(inputs, outputs) {
 
     // Create layers
 
-    const layerCount = 2
+    const layerCount = 3
 
     for (let i = 0; i < layerCount; i++) network.addLayer({})
 
@@ -102,24 +102,6 @@ Player.prototype.createNetwork = function(inputs, outputs) {
     player.network = network
 }
 
-Player.prototype.findDistanceFrom = function(object) {
-
-    const player = this
-
-    const distance = Math.sqrt(Math.pow(player.x - object.x) + Math.pow(player.y - object.y))
-    return distance
-}
-
-Player.prototype.findClosestEnemy = function() {
-
-    const player = this
-
-    const enemies = Object.values(objects.enemy)
-
-    const closestEnemies = enemies.sort(function(a, b) { a.bottom - b.bottom })
-    return closestEnemies[0]
-}
-
 Player.prototype.kill = function() {
 
     const player = this
@@ -127,4 +109,24 @@ Player.prototype.kill = function() {
     player.network.visualsParent.remove()
 
     delete objects[player.type][player.id]
+}
+
+Player.prototype.isDead = function() {
+
+    const player = this
+
+    for (const fireball of Object.values(objects.fireball)) {
+
+        // If fireball is inside player
+
+        if (fireball.bottom >= player.top &&
+            fireball.right >= player.left &&
+            fireball.left <= player.right) {
+
+            // Kill player
+
+            player.kill()
+            break
+        }
+    }
 }

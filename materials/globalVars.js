@@ -5,7 +5,7 @@ let properties = {
     gridPartSize: 25,
     requiredPlayers: 100,
     nextId: 0,
-    speedMultiplier: 4,
+    speedMultiplier: 10,
     map: {
         el: document.getElementById("map"),
     },
@@ -17,7 +17,8 @@ let properties = {
         purple: "#c700c2",
     },
     objects: {
-
+        fireball: {},
+        enemy: {},
     },
     findById(id) {
 

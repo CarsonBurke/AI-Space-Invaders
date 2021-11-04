@@ -19,8 +19,6 @@ function init() {
 
     for (let i = 0; i < requiredPlayers; i++) createPlayer({})
 
-    createEnemy()
-
     //
 
     objects.laser = {}

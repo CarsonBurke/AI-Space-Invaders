@@ -512,7 +512,7 @@ class NeuralNetwork {
 
         // Get random value influenced by learning rate
 
-        let value = Math.random() * 5
+        let value = Math.random() * 10
 
         // Stop if value is more than 1
 
