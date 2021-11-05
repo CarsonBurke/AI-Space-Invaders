@@ -6,6 +6,7 @@ let displayBestScore = 0
 let tick = 0
 let lastReset = 0
 let enemyWon
+let spawning = true
 let spawnAmount = 1
 let spawnedEnemies = 0
 
@@ -25,6 +26,7 @@ function reproduce(bestPlayer) {
     lastReset = 0
 
     enemyWon = false
+    spawning = true
     spawnAmount = 0
     spawnedEnemies = 0
 
@@ -149,7 +151,7 @@ function run(tickSpeed) {
                             // Take action connected to output
 
                             if (i == 0) {
-
+                                
                                 player.shoot(tick)
                                 continue
                             }
@@ -170,13 +172,19 @@ function run(tickSpeed) {
                         i++
                     }
 
-                    // If there are more than 1 players left
+                    const playerShouldDie = player.isDead(fireballs)
 
-                    if (Object.keys(objects.player).length > 1) {
+                    // Check if there is a fireball inside the player. If there is one player left
 
-                        // Check if there is a fireball inside the player
+                    if (playerShouldDie && Object.keys(objects.player).length == 1) {
 
-                        player.isDead(fireballs)
+                        // Inform that the enemy won
+
+                        enemyWon = true
+                    }
+                    else if (playerShouldDie) {
+
+                        player.kill()
                     }
 
                     // Hide player's visualsParent
@@ -202,7 +210,7 @@ function run(tickSpeed) {
 
                 // If there is only 1 player left, reproduce with bestPlayer
 
-                if (enemyWon || playerCount == 1) reproduce(bestPlayer)
+                if (enemyWon) reproduce(bestPlayer)
             }
 
             runLasers()
@@ -225,11 +233,15 @@ function run(tickSpeed) {
 
                 spawnAmount += ((lastReset - spawnedEnemies) / 100000)
 
-                while (spawnedEnemies < Math.floor(spawnAmount)) {
+                while (spawnedEnemies < Math.floor(spawnAmount) && spawning) {
 
                     createEnemy()
                     spawnedEnemies++
                 }
+
+                if (spawnedEnemies == 100 && spawning) spawning = false
+
+                if (enemies.length == 0 && !spawning) enemyWon = true
 
                 for (const enemy of enemies) {
 
@@ -240,7 +252,7 @@ function run(tickSpeed) {
 
                 // Find closest few enemies
 
-                const closestFewEnemies = closestEnemies.slice(closestEnemies.length - 10, closestEnemies.length)
+                const closestFewEnemies = closestEnemies.slice(-5)
 
                 // Loop through enemies of closestFewEnemies
 

@@ -113,8 +113,9 @@ function createEnemy() {
         width: width,
         height: height,
         image: document.getElementById("enemy"),
-        speed: Math.max(Math.random(), 0.01) * 0.05,
-        shootDelay: Math.max(5000, Math.random() * 12500) / speedMultiplier,
-        lastShot: 100,
+        speed: Math.max(Math.random(), 0.08) * 0.3,
+        shootDelay: Math.max(3000, Math.random() * 8000),
+        lastShot: 1000,
+        moveType: 'left',
     }).draw()
 }

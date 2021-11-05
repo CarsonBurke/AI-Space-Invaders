@@ -3,7 +3,7 @@
 let properties = {
     mapDimensions: 700,
     gridPartSize: 25,
-    requiredPlayers: 25,
+    requiredPlayers: 10,
     nextId: 0,
     speedMultiplier: 10,
     map: {
@@ -19,6 +19,7 @@ let properties = {
     objects: {
         fireball: {},
         enemy: {},
+        laser: {},
     },
     findById(id) {
 

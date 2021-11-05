@@ -2,9 +2,50 @@ Enemy.prototype.moveDown = function() {
 
     const enemy = this
 
-    enemy.move({
-        y: enemy.y + enemy.speed
-    })
+    if (enemy.moveType == 'left') {
+
+        // Move left
+
+        enemy.move({
+            x: enemy.x - enemy.speed
+        })
+
+        //
+
+        if (enemy.left <= 0) {
+
+            // Move down
+
+            enemy.move({
+                y: enemy.y + enemy.height
+            })
+
+            //
+
+            enemy.moveType = 'right'
+        }
+    }
+    else if (enemy.moveType == 'right') {
+
+        // Move right
+
+        enemy.move({
+            x: enemy.x + enemy.speed
+        })
+
+        if (enemy.right >= map.el.width) {
+
+            // Move down
+
+            enemy.move({
+                y: enemy.y + enemy.height
+            })
+
+            //
+
+            enemy.moveType = 'left'
+        }
+    }
 }
 
 Enemy.prototype.shoot = function() {

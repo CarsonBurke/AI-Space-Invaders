@@ -123,10 +123,7 @@ Player.prototype.isDead = function(fireballs) {
             fireball.right >= player.left &&
             fireball.left <= player.right) {
 
-            // Kill player
-
-            player.kill()
-            break
+            return true
         }
     }
 }
