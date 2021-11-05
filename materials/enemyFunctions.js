@@ -73,5 +73,5 @@ Enemy.prototype.kill = function() {
 
     const enemy = this
 
-    delete objects[enemy.type][enemy.id]
+    delete games[enemy.gameID].objects[enemy.type][enemy.id]
 }

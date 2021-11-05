@@ -21,6 +21,6 @@ function init() {
 
         const game = new Game()
 
-        createPlayer({ game: game })
+        game.createPlayer({})
     }
 }

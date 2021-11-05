@@ -42,7 +42,7 @@ function reproduce(bestPlayer) {
                 continue
             }
 
-            delete objects[type][objectID]
+            delete games[laser.gameID].objects[type][objectID]
         }
     }
 
@@ -52,7 +52,7 @@ function reproduce(bestPlayer) {
 
         const duplicateNetwork = bestPlayer.network.clone(bestPlayer.inputs, bestPlayer.outputs)
 
-        createPlayer({ network: duplicateNetwork.learn() })
+        game.createPlayer({ network: duplicateNetwork.learn() })
     }
 
     // Kill bestPlayer
@@ -64,271 +64,256 @@ function run(tickSpeed) {
 
     let i = 0
 
-    setInterval(runTick, tickSpeed)
+    while (i < speedMultiplier) {
 
-    function runTick() {
+        setInterval(runTick, tickSpeed)
+        i++
+    }
+}
 
-        i = 0
+function runTick() {
 
-        while (i < speedMultiplier) {
+    tick++
+    lastReset++
 
-            tick++
-            lastReset++
+    displayTick = tick
 
-            displayTick = tick
+    for (const game of Object.values(games)) {
+        
+        // Find players
 
-            // Find players
+        const players = Object.values(game.objects.player)
+        const playerCount = players.length
 
-            const players = Object.values(objects.player)
-            const playerCount = players.length
+        // Find lasers
 
-            // Find enemies
-            const enemies = Object.values(objects.enemy)
-            const closestEnemies = enemies.sort((a, b) => a.bottom - b.bottom)
-            const closestEnemy = closestEnemies[closestEnemies.length - 1]
+        const lasers = Object.values(game.objects.laser)
+        const laserCount = lasers.length
 
-            // Find fireballs
-            const fireballs = Object.values(objects.fireball)
-            const closestFireballs = fireballs.sort((a, b) => a.bottom - b.bottom)
-            const closestFireball = closestFireballs[closestFireballs.length - 1]
+        // Find enemies
+        const enemies = Object.values(game.objects.enemy)
+        const closestEnemies = enemies.sort((a, b) => a.bottom - b.bottom)
+        const closestEnemy = closestEnemies[closestEnemies.length - 1]
 
-            //
+        // Find fireballs
+        const fireballs = Object.values(game.objects.fireball)
+        const closestFireballs = fireballs.sort((a, b) => a.bottom - b.bottom)
+        const closestFireball = closestFireballs[closestFireballs.length - 1]
 
-            runPlayers()
+        //
 
-            function runPlayers() {
+        runPlayers()
 
-                let noEnemies
+        function runPlayers() {
 
-                displayPlayers = playerCount
+            let noEnemies
 
-                for (const player of players) {
+            displayPlayers = playerCount
 
-                    // Define inputs and outputs
+            for (const player of players) {
 
-                    const inputs = [
-                        { name: 'Player x', value: player.left - player.width / 2 },
-                        { name: 'Closest enemy  x', value: closestEnemy ? closestEnemy.left - closestEnemy.width / 2 : 0 },
-                        { name: 'Closest fireball  x', value: closestFireball ? closestFireball.left - closestFireball.width / 2 : 0 },
-                    ]
-                    player.inputs = inputs
+                // Define inputs and outputs
 
-                    const outputs = [
-                        { name: 'Shoot' },
-                        { name: 'Move left' },
-                        { name: 'Move right' },
-                    ]
-                    player.outputs = outputs
+                const inputs = [
+                    { name: 'Player x', value: player.left - player.width / 2 },
+                    { name: 'Closest enemy  x', value: closestEnemy ? closestEnemy.left - closestEnemy.width / 2 : 0 },
+                    { name: 'Closest fireball  x', value: closestFireball ? closestFireball.left - closestFireball.width / 2 : 0 },
+                ]
+                player.inputs = inputs
 
-                    // Create network if player doesn't have one
+                const outputs = [
+                    { name: 'Shoot' },
+                    { name: 'Move left' },
+                    { name: 'Move right' },
+                ]
+                player.outputs = outputs
 
-                    if (!player.network) player.createNetwork(inputs, outputs)
+                // Create network if player doesn't have one
+                
+                if (!player.network) player.createNetwork(inputs, outputs)
 
-                    // Run network
+                // Run network
 
-                    player.network.forwardPropagate(inputs)
+                player.network.forwardPropagate(inputs)
 
-                    // Find last layer
+                // Find last layer
 
-                    const lastLayer = player.network.layers[Object.keys(player.network.layers).length - 1]
+                const lastLayer = player.network.layers[Object.keys(player.network.layers).length - 1]
 
-                    // Track iterations and loop through output perceptrons
+                // Track iterations and loop through output perceptrons
 
-                    let i = 0
+                let i = 0
 
-                    for (const perceptronName in lastLayer.perceptrons) {
+                for (const perceptronName in lastLayer.perceptrons) {
 
-                        const perceptron = lastLayer.perceptrons[perceptronName]
+                    const perceptron = lastLayer.perceptrons[perceptronName]
 
-                        // Iterate if output is 0
+                    // Iterate if output is 0
 
-                        if (perceptron.activateValue > 0) {
+                    if (perceptron.activateValue > 0) {
 
-                            // Take action connected to output
+                        // Take action connected to output
 
-                            if (i == 0) {
-                                
-                                player.shoot(tick)
-                                continue
-                            }
-                            if (i == 1) {
-
-                                player.moveLeft()
-                                continue
-                            }
-                            if (i == 2) {
-
-                                player.moveRight()
-                                continue
-                            }
+                        if (i == 0) {
+                            
+                            player.shoot(tick)
+                            continue
                         }
+                        if (i == 1) {
 
-                        // Record iteration
+                            player.moveLeft()
+                            continue
+                        }
+                        if (i == 2) {
 
-                        i++
+                            player.moveRight()
+                            continue
+                        }
                     }
 
-                    const playerShouldDie = player.isDead(fireballs)
+                    // Record iteration
 
-                    // Check if there is a fireball inside the player. If there is one player left
-
-                    if (playerShouldDie && Object.keys(objects.player).length == 1) {
-
-                        // Inform that the enemy won
-
-                        enemyWon = true
-                    }
-                    else if (playerShouldDie) {
-
-                        player.kill()
-                    }
-
-                    // Hide player's visualsParent
-
-                    player.network.visualsParent.classList.remove('visualsParentShow')
+                    i++
                 }
 
-                // Find best player
+                // If player is dead to a fireball set as not alive
 
-                const bestPlayer = findBestPlayer(players)
+                if(player.isDead(fireballs)) {
 
-                // Update score if player's score is best
+                    player.alive = false
+                    game.active = false
+                }
 
-                if (bestPlayer.score > displayBestScore) displayBestScore = bestPlayer.score
+                // Hide player's visualsParent
 
-                // Show player's visuals
+                player.network.visualsParent.classList.remove('visualsParentShow')
+            }
+        }
 
-                bestPlayer.network.visualsParent.classList.add("visualsParentShow")
+        runLasers()
 
-                // Update player's visuals
+        function runLasers() {
 
-                bestPlayer.network.updateVisuals()
+            for (const laser of lasers) {
 
-                // If there is only 1 player left, reproduce with bestPlayer
+                laser.moveUp()
 
-                if (enemyWon) reproduce(bestPlayer)
+                laser.canKillEnemy(enemies, fireballs)
+
+                if (laser.bottom <= 0) laser.delete()
+            }
+        }
+
+        runEnemies()
+
+        function runEnemies() {
+
+            if (lastReset % 100 == 0 && game.spawning) {
+
+                game.createEnemy()
+                game.spawnedEnemies++
             }
 
-            runLasers()
+            if (game.spawnedEnemies == 100 && game.spawning) game.spawning = false
 
-            function runLasers() {
+            if (enemies.length == 0 && !game.spawning) game.active = false
 
-                for (const laser of Object.values(objects.laser)) {
+            for (const enemy of enemies) {
 
-                    laser.moveUp()
+                // Move enemy
 
-                    laser.canKillEnemy(enemies, fireballs)
-
-                    if (laser.bottom <= 0) laser.delete()
-                }
+                enemy.moveDown()
             }
 
-            runEnemies()
+            // Find closest few enemies
 
-            function runEnemies() {
+            const closestFewEnemies = closestEnemies.slice(-5)
 
-                spawnAmount += ((lastReset - spawnedEnemies) / 100000)
+            // Loop through enemies of closestFewEnemies
 
-                while (spawnedEnemies < Math.floor(spawnAmount) && spawning) {
+            for (const enemy of closestFewEnemies) {
 
-                    createEnemy()
-                    spawnedEnemies++
+                // If the enemy reaches the bottom of the map, inform to restart
+
+                if (enemy.bottom >= map.el.height) {
+
+                    enemyWon = true
                 }
 
-                if (spawnedEnemies == 100 && spawning) spawning = false
+                // Try to shoot a fireball
 
-                if (enemies.length == 0 && !spawning) enemyWon = true
-
-                for (const enemy of enemies) {
-
-                    // Move enemy
-
-                    enemy.moveDown()
-                }
-
-                // Find closest few enemies
-
-                const closestFewEnemies = closestEnemies.slice(-5)
-
-                // Loop through enemies of closestFewEnemies
-
-                for (const enemy of closestFewEnemies) {
-
-                    // If the enemy reaches the bottom of the map, inform to restart
-
-                    if (enemy.bottom >= map.el.height) {
-
-                        enemyWon = true
-                    }
-
-                    // Try to shoot a fireball
-
-                    /* enemy.shoot() */
-                }
+                /* enemy.shoot() */
             }
+        }
 
-            runFireballs()
+        runFireballs()
 
-            function runFireballs() {
+        function runFireballs() {
 
-                for (const fireball of fireballs) {
+            for (const fireball of fireballs) {
 
-                    fireball.moveUp()
+                fireball.moveDown()
 
-                    if (fireball.top >= map.el.height) fireball.delete()
-                }
+                if (fireball.top >= map.el.height) fireball.delete()
             }
+        }
 
-            updateObjectPositions()
+        updateObjectPositions()
 
-            function updateObjectPositions() {
+        function updateObjectPositions() {
 
-                // Store the current transformation matrix
+            // Store the current transformation matrix
 
-                map.cr.save()
+            map.cr.save()
 
-                // Use the identity matrix while clearing the canvas
+            // Use the identity matrix while clearing the canvas
 
-                map.cr.setTransform(1, 0, 0, 1, 0, 0)
-                map.cr.clearRect(0, 0, map.el.width, map.el.height)
+            map.cr.setTransform(1, 0, 0, 1, 0, 0)
+            map.cr.clearRect(0, 0, map.el.width, map.el.height)
 
-                // Restore the transform
+            // Restore the transform
 
-                map.cr.restore()
+            map.cr.restore()
 
-                // Re-draw everything
+            // Re-draw everything
 
-                for (let type in objects) {
+            for (const game of Object.values(games)) {
 
-                    for (let id in objects[type]) {
+                // Iterate if game isn't active
 
-                        let object = objects[type][id]
+                if (!game.active) continue
+
+                const objects = game.objects
+
+                for (const type in objects) {
+
+                    for (const id in objects[type]) {
+
+                        const object = objects[type][id]
 
                         object.draw()
                     }
                 }
             }
+        }
 
-            updateDisplay()
+        updateDisplay()
 
-            function updateDisplay() {
+        function updateDisplay() {
 
-                let el
+            let el
 
-                el = document.getElementById('tick')
-                el.innerText = displayTick
+            el = document.getElementById('tick')
+            el.innerText = displayTick
 
-                el = document.getElementById('generation')
-                el.innerText = displayGeneration
+            el = document.getElementById('generation')
+            el.innerText = displayGeneration
 
-                el = document.getElementById('players')
-                el.innerText = displayPlayers
+            el = document.getElementById('players')
+            el.innerText = displayPlayers
 
-                el = document.getElementById('bestScore')
-                el.innerText = displayBestScore
-            }
-
-            i++
+            el = document.getElementById('bestScore')
+            el.innerText = displayBestScore
         }
     }
 }

@@ -1,4 +1,4 @@
-Fireball.prototype.moveUp = function() {
+Fireball.prototype.moveDown = function() {
 
     const fireball = this
 
@@ -11,5 +11,5 @@ Fireball.prototype.delete = function() {
 
     const fireball = this
 
-    delete objects[fireball.type][fireball.id]
+    delete games[fireball.gameID].objects[fireball.type][fireball.id]
 }

@@ -96,7 +96,7 @@ Player.prototype.kill = function() {
 
     player.network.visualsParent.remove()
 
-    delete objects[player.type][player.id]
+    delete games[player.gameID].objects[player.type][player.id]
 }
 
 Player.prototype.isDead = function(fireballs) {

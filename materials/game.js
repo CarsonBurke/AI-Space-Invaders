@@ -1,10 +1,3 @@
-const gameObjectTypes = {
-    player: {},
-    laser: {},
-    enemy: {},
-    fireball: {},
-}
-
 class Game {
     constructor() {
 
@@ -15,7 +8,14 @@ class Game {
         //
 
         this.active = true
-        this.objects = gameObjectTypes
+        this.spawnedEnemies = 0
+        this.spawning = true
+        this.objects = {
+            player: {},
+            laser: {},
+            enemy: {},
+            fireball: {},
+        }
 
         //
 
@@ -50,11 +50,7 @@ class Sprite {
 
         //
 
-        if (!objects[this.type]) objects[this.type] = {}
-
-        //
-
-        objects[this.type][this.id] = this
+        games[this.gameID].objects[this.type][this.id] = this
     }
     draw() {
 

@@ -22,11 +22,12 @@ Game.prototype.createPlayer = function(opts) {
         network: opts.network || undefined,
         alive: true,
         gameID: game.id,
-    }).draw()
+    })
+    player.draw()
 
     // Assign player to game
-
-    game.player[player.id] = player
+    
+    game.objects.player[player.id] = player
 }
 
 Game.prototype.createLaser = function(player) {
@@ -50,11 +51,12 @@ Game.prototype.createLaser = function(player) {
         player: player,
         speed: 2,
         gameID: game.id,
-    }).draw()
+    })
+    laser.draw()
 
     // Assign laser to game
 
-    game.player[laser.id] = laser
+    game.objects.laser[laser.id] = laser
 }
 
 Game.prototype.createEnemy = function(opts) {
@@ -85,11 +87,12 @@ Game.prototype.createEnemy = function(opts) {
         lastShot: 2000,
         moveType: 'left',
         gameID: game.id,
-    }).draw()
+    })
+    enemy.draw()
 
     // Assign enemy to game
 
-    game.player[enemy.id] = enemy
+    game.objects.enemy[enemy.id] = enemy
 }
 
 Game.prototype.createFireball = function() {
@@ -112,9 +115,10 @@ Game.prototype.createFireball = function() {
         image: document.getElementById('fireball'),
         speed: 1,
         gameI: game.id,
-    }).draw()
+    })
+    fireball.draw()
 
     // Assign fireball to game
 
-    game.player[fireball.id] = fireball
+    game.objects.fireball[fireball.id] = fireball
 }
