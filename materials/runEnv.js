@@ -24,7 +24,7 @@ function findAllPlayers(allGames) {
 function findBestPlayer(alivePlayers) {
 
     const bestPlayers = alivePlayers.sort(function(a, b) { a.score - b.score })
-    return bestPlayers[0]
+    return bestPlayers[bestPlayers.length - 1]
 }
 
 function reproduce(bestPlayer, allGames) {
@@ -224,7 +224,7 @@ function runTick() {
 
         function runEnemies() {
 
-            if ((lastReset == 1 || lastReset % 500 == 0) && game.spawning) {
+            if ((lastReset == 1 || lastReset % 100 == 0) && game.spawning) {
 
                 game.createEnemy()
                 game.spawnedEnemies++
