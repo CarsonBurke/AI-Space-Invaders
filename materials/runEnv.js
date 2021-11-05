@@ -6,11 +6,27 @@ let displayBestScore = 0
 let tick = 0
 let lastReset = 0
 
-function findBestPlayer(players) {
+const allGames = Object.values(games)
+console.log(allGames)
 
-    // Sort player by score and return first in assortment
+function findAllPlayers() {
 
-    const bestPlayers = players.sort(function(a, b) { a.score - b.score })
+    let allPlayers = []
+
+    for (const game of allGames) {
+
+        for (const player of Object.values(game.objects.player)) {
+            
+            allPlayers.push(player)
+        }
+    }
+
+    return allPlayers
+}
+
+function findBestPlayer(allPlayers) {
+
+    const bestPlayers = allPlayers.sort(function(a, b) { a.score - b.score })
     return bestPlayers[0]
 }
 
@@ -23,8 +39,6 @@ function reproduce(bestPlayer) {
 
     enemyWon = false
     spawning = true
-    spawnAmount = 0
-    spawnedEnemies = 0
 
     // Delete all game objects
 
@@ -78,7 +92,10 @@ function runTick() {
 
     displayTick = tick
 
-    for (const game of Object.values(games)) {
+    const allPlayers = findAllPlayers()
+    console.log(allPlayers)
+
+    for (const game of allGames) {
         
         // Find players
 
@@ -88,7 +105,6 @@ function runTick() {
         // Find lasers
 
         const lasers = Object.values(game.objects.laser)
-        const laserCount = lasers.length
 
         // Find enemies
         const enemies = Object.values(game.objects.enemy)
@@ -214,7 +230,7 @@ function runTick() {
                 game.spawnedEnemies++
             }
 
-            if (game.spawnedEnemies == 100 && game.spawning) game.spawning = false
+            if (game.spawnedEnemies == 20 && game.spawning) game.spawning = false
 
             if (enemies.length == 0 && !game.spawning) game.active = false
 
@@ -277,7 +293,7 @@ function runTick() {
 
             // Re-draw everything
 
-            for (const game of Object.values(games)) {
+            for (const game of allGames) {
 
                 // Iterate if game isn't active
 
@@ -315,5 +331,17 @@ function runTick() {
             el = document.getElementById('bestScore')
             el.innerText = displayBestScore
         }
+    }
+
+    const alivePlayers = allPlayers.filter(player => player.alive)
+    displayPlayers = alivePlayers.length
+
+    const bestPlayer = findBestPlayer(allPlayers)
+
+    bestPlayer.network.visualsParent.classList.add('visualsParentShow')
+
+    if (alivePlayers.length == 0) {
+
+        reproduce(bestPlayer, allPlayers)
     }
 }

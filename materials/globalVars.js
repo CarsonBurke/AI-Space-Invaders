@@ -5,7 +5,7 @@ let properties = {
     gridPartSize: 25,
     gamesAmount: 10,
     nextId: 0,
-    speedMultiplier: 10,
+    speedMultiplier: 100,
     map: {
         el: document.getElementById("map"),
     },
