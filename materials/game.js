@@ -1,3 +1,32 @@
+const gameObjectTypes = {
+    player: {},
+    laser: {},
+    enemy: {},
+    fireball: {},
+}
+
+class Game {
+    constructor() {
+
+        //
+
+        this.id = newID()
+
+        //
+
+        this.active = true
+        this.objects = gameObjectTypes
+
+        //
+
+        games[this.id] = this
+    }
+    stop() {
+
+        this.active = false
+    }
+}
+
 class Sprite {
     constructor(opts) {
 
@@ -75,47 +104,4 @@ class Fireball extends Sprite {
 
         super(opts)
     }
-}
-
-function createPlayer(opts) {
-
-    const width = 45
-    const height = 50
-
-    new Player({
-        type: "player",
-        x: map.el.width * 0.5 - width * 0.5,
-        y: map.el.height - 55,
-        width: width,
-        height: height,
-        image: document.getElementById("player"),
-        score: 0,
-        shootDelay: 300 / speedMultiplier,
-        lastShot: 100,
-        network: opts.network || undefined
-    }).draw()
-}
-
-function createEnemy() {
-
-    const width = 36
-    const height = 27
-
-    let x = Math.random() * map.el.width
-
-    x = Math.max(width, x)
-    x = Math.min(x - width, x)
-
-    new Enemy({
-        type: "enemy",
-        x: x,
-        y: 0,
-        width: width,
-        height: height,
-        image: document.getElementById("enemy"),
-        speed: Math.max(Math.random(), 0.08) * 0.3,
-        shootDelay: Math.max(3000, Math.random() * 8000),
-        lastShot: 1000,
-        moveType: 'left',
-    }).draw()
 }

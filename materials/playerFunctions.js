@@ -8,19 +8,7 @@ Player.prototype.shoot = function(tick) {
 
     // Create laser
 
-    const width = 6
-    const height = 30
-
-    new Laser({
-        type: 'laser',
-        x: player.left + player.width * 0.5 - width / 2,
-        y: player.top - height + 15,
-        width: width,
-        height: height,
-        image: document.getElementById('laser'),
-        player: player,
-        speed: 2,
-    }).draw()
+    games[player.gameID].createLaser(player)
 
     // Record that there was recently a shot
 

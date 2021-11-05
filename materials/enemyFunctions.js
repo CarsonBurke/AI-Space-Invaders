@@ -24,8 +24,10 @@ Enemy.prototype.moveDown = function() {
 
             enemy.moveType = 'right'
         }
+
+        return
     }
-    else if (enemy.moveType == 'right') {
+    if (enemy.moveType == 'right') {
 
         // Move right
 
@@ -45,10 +47,12 @@ Enemy.prototype.moveDown = function() {
 
             enemy.moveType = 'left'
         }
+
+        return
     }
 }
 
-Enemy.prototype.shoot = function() {
+Enemy.prototype.shoot = function(tick) {
 
     const enemy = this
 
@@ -58,18 +62,7 @@ Enemy.prototype.shoot = function() {
 
     // Create fireball
 
-    const width = 15
-    const height = 19
-
-    new Fireball({
-        type: 'fireball',
-        x: enemy.left + enemy.width * 0.5 - width / 2,
-        y: enemy.top - height + 15,
-        width: width,
-        height: height,
-        image: document.getElementById('fireball'),
-        speed: 1,
-    }).draw()
+    games[enemy.gameID].createFireball()
 
     // Record that there was recently a shot
 

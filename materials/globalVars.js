@@ -3,23 +3,19 @@
 let properties = {
     mapDimensions: 700,
     gridPartSize: 25,
-    requiredPlayers: 10,
+    gamesAmount: 10,
     nextId: 0,
     speedMultiplier: 10,
     map: {
         el: document.getElementById("map"),
     },
+    games: {},
     colors: {
         red: "#b51818",
         blue: "#3718b5",
         green: "#18b543",
         yellow: "#a0a620",
         purple: "#c700c2",
-    },
-    objects: {
-        fireball: {},
-        enemy: {},
-        laser: {},
     },
     findById(id) {
 

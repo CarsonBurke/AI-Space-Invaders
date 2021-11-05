@@ -17,5 +17,10 @@ function init() {
 
     // Generate sprites
 
-    for (let i = 0; i < requiredPlayers; i++) createPlayer({})
+    for (let i = 0; i < gamesAmount; i++) {
+
+        const game = new Game()
+
+        createPlayer({ game: game })
+    }
 }

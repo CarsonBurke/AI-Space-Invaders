@@ -5,10 +5,6 @@ let displayBestScore = 0
 
 let tick = 0
 let lastReset = 0
-let enemyWon
-let spawning = true
-let spawnAmount = 1
-let spawnedEnemies = 0
 
 function findBestPlayer(players) {
 
@@ -267,7 +263,7 @@ function run(tickSpeed) {
 
                     // Try to shoot a fireball
 
-                    enemy.shoot()
+                    /* enemy.shoot() */
                 }
             }
 
