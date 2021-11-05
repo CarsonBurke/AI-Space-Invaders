@@ -10,7 +10,7 @@ function newID() {
 let defaults = {
     learningRate: 0.1,
     bias: 0,
-    lineMutation: true,
+    lineMutation: false,
 }
 
 class Line {

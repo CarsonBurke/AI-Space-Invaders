@@ -21,9 +21,13 @@ class Game {
 
         games[this.id] = this
     }
-    stop() {
+    stop(players) {
 
-        this.active = false
+        const game = this
+
+        game.active = false
+        
+        for (const player of players) player.alive = false
     }
 }
 

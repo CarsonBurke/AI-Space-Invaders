@@ -59,7 +59,7 @@ Player.prototype.createNetwork = function(inputs, outputs) {
 
     // Create hidden perceptrons
 
-    const hiddenPerceptronsNeed = 5
+    const hiddenPerceptronsNeed = 4
 
     // Loop through layers
 

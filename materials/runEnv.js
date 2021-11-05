@@ -6,10 +6,7 @@ let displayBestScore = 0
 let tick = 0
 let lastReset = 0
 
-const allGames = Object.values(games)
-console.log(allGames)
-
-function findAllPlayers() {
+function findAllPlayers(allGames) {
 
     let allPlayers = []
 
@@ -24,49 +21,61 @@ function findAllPlayers() {
     return allPlayers
 }
 
-function findBestPlayer(allPlayers) {
+function findBestPlayer(alivePlayers) {
 
-    const bestPlayers = allPlayers.sort(function(a, b) { a.score - b.score })
+    const bestPlayers = alivePlayers.sort(function(a, b) { a.score - b.score })
     return bestPlayers[0]
 }
 
-function reproduce(bestPlayer) {
+function reproduce(bestPlayer, allGames) {
 
     // Record stats
 
     displayGeneration++
     lastReset = 0
 
-    enemyWon = false
-    spawning = true
+    // Delete old objects
 
-    // Delete all game objects
+    for (const game of allGames) {
 
-    for (let type in objects) {
+        const objects = game.objects
 
-        if (type == 'background') continue
+        for (const type in objects) {
 
-        for (let objectID in objects[type]) {
+            if (type == 'background') continue
 
-            const object = objects[type][objectID]
+            for (const id in objects[type]) {
 
-            if (type == 'player' && object.id != bestPlayer.id) {
+                const object = objects[type][id]
 
-                object.kill()
-                continue
+                if (type == 'player') {
+
+                    if (id == bestPlayer.id) continue
+
+                    object.kill()
+                }
+
+                delete game.objects[type][id]
             }
-
-            delete games[laser.gameID].objects[type][objectID]
         }
     }
 
-    // Create new players
+    // Reconfigure games
 
-    for (let i = 0; i < requiredPlayers; i++) {
+    for (const game of allGames) {
 
-        const duplicateNetwork = bestPlayer.network.clone(bestPlayer.inputs, bestPlayer.outputs)
+        game.active = true
+        game.spawnedEnemies = 0
+        game.spawning = true
 
-        game.createPlayer({ network: duplicateNetwork.learn() })
+        // Create new player
+
+        for (let i = 0; i < requiredPlayers; i++) {
+
+            const duplicateNetwork = bestPlayer.network.clone(bestPlayer.inputs, bestPlayer.outputs)
+
+            game.createPlayer({ network: duplicateNetwork.learn() })
+        }
     }
 
     // Kill bestPlayer
@@ -92,15 +101,15 @@ function runTick() {
 
     displayTick = tick
 
-    const allPlayers = findAllPlayers()
-    console.log(allPlayers)
+    const allGames = Object.values(games)
+
+    const allPlayers = findAllPlayers(allGames)
 
     for (const game of allGames) {
         
         // Find players
 
         const players = Object.values(game.objects.player)
-        const playerCount = players.length
 
         // Find lasers
 
@@ -114,7 +123,6 @@ function runTick() {
         // Find fireballs
         const fireballs = Object.values(game.objects.fireball)
         const closestFireballs = fireballs.sort((a, b) => a.bottom - b.bottom)
-        const closestFireball = closestFireballs[closestFireballs.length - 1]
 
         //
 
@@ -122,18 +130,14 @@ function runTick() {
 
         function runPlayers() {
 
-            let noEnemies
-
-            displayPlayers = playerCount
-
             for (const player of players) {
 
                 // Define inputs and outputs
 
                 const inputs = [
-                    { name: 'Player x', value: player.left - player.width / 2 },
-                    { name: 'Closest enemy  x', value: closestEnemy ? closestEnemy.left - closestEnemy.width / 2 : 0 },
-                    { name: 'Closest fireball  x', value: closestFireball ? closestFireball.left - closestFireball.width / 2 : 0 },
+                    { name: 'Player x', value: player.left + player.width / 2 },
+                    { name: 'Closest enemy  x', value: closestEnemy ? closestEnemy.left + closestEnemy.width / 2 : 0 },
+                    /* { name: 'Closest fireball  x', value: closestFireball ? closestFireball.left - closestFireball.width / 2 : 0 }, */
                 ]
                 player.inputs = inputs
 
@@ -194,11 +198,7 @@ function runTick() {
 
                 // If player is dead to a fireball set as not alive
 
-                if(player.isDead(fireballs)) {
-
-                    player.alive = false
-                    game.active = false
-                }
+                if(player.isDead(fireballs)) game.stop(players)
 
                 // Hide player's visualsParent
 
@@ -224,15 +224,15 @@ function runTick() {
 
         function runEnemies() {
 
-            if (lastReset % 100 == 0 && game.spawning) {
+            if ((lastReset == 1 || lastReset % 500 == 0) && game.spawning) {
 
                 game.createEnemy()
                 game.spawnedEnemies++
             }
 
-            if (game.spawnedEnemies == 20 && game.spawning) game.spawning = false
+            if (game.spawnedEnemies >= maxEnemies && game.spawning) game.spawning = false
 
-            if (enemies.length == 0 && !game.spawning) game.active = false
+            if (enemies.length == 0 && !game.spawning) game.stop(players)
 
             for (const enemy of enemies) {
 
@@ -251,14 +251,11 @@ function runTick() {
 
                 // If the enemy reaches the bottom of the map, inform to restart
 
-                if (enemy.bottom >= map.el.height) {
-
-                    enemyWon = true
-                }
+                if (enemy.bottom >= map.el.height) game.stop(players)
 
                 // Try to shoot a fireball
 
-                /* enemy.shoot() */
+                /* enemy.shoot(tick) */
             }
         }
 
@@ -296,7 +293,7 @@ function runTick() {
             for (const game of allGames) {
 
                 // Iterate if game isn't active
-
+                
                 if (!game.active) continue
 
                 const objects = game.objects
@@ -335,13 +332,18 @@ function runTick() {
 
     const alivePlayers = allPlayers.filter(player => player.alive)
     displayPlayers = alivePlayers.length
-
+    
     const bestPlayer = findBestPlayer(allPlayers)
 
-    bestPlayer.network.visualsParent.classList.add('visualsParentShow')
-
     if (alivePlayers.length == 0) {
-
-        reproduce(bestPlayer, allPlayers)
+        
+        reproduce(bestPlayer, allGames)
     }
+
+    if (bestPlayer.score > displayBestScore) displayBestScore = bestPlayer.score
+
+    bestPlayer.network.updateVisuals()
+
+    bestPlayer.network.visualsParent.classList.add('visualsParentShow')
+    
 }

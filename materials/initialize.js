@@ -21,6 +21,9 @@ function init() {
 
         const game = new Game()
 
-        game.createPlayer({})
+        for (let i = 0; i < requiredPlayers; i++) {
+
+            game.createPlayer({})
+        }
     }
 }

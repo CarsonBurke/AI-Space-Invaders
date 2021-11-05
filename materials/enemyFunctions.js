@@ -2,7 +2,13 @@ Enemy.prototype.moveDown = function() {
 
     const enemy = this
 
-    if (enemy.moveType == 'left') {
+    // Move down
+
+    enemy.move({
+        y: enemy.y + enemy.speed / 5
+    })
+
+    /* if (enemy.moveType == 'left') {
 
         // Move left
 
@@ -49,7 +55,7 @@ Enemy.prototype.moveDown = function() {
         }
 
         return
-    }
+    } */
 }
 
 Enemy.prototype.shoot = function(tick) {
@@ -62,7 +68,7 @@ Enemy.prototype.shoot = function(tick) {
 
     // Create fireball
 
-    games[enemy.gameID].createFireball()
+    games[enemy.gameID].createFireball(enemy)
 
     // Record that there was recently a shot
 

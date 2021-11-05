@@ -49,7 +49,7 @@ Game.prototype.createLaser = function(player) {
         height: height,
         image: document.getElementById('laser'),
         player: player,
-        speed: 2,
+        speed: 6,
         gameID: game.id,
     })
     laser.draw()
@@ -59,7 +59,7 @@ Game.prototype.createLaser = function(player) {
     game.objects.laser[laser.id] = laser
 }
 
-Game.prototype.createEnemy = function(opts) {
+Game.prototype.createEnemy = function() {
 
     const game = this
 
@@ -70,8 +70,8 @@ Game.prototype.createEnemy = function(opts) {
 
     let x = Math.random() * map.el.width
 
-    x = Math.max(width, x)
-    x = Math.min(x - width, x)
+    x = Math.max(width * 4, x)
+    x = Math.min(x - width * 2, x)
 
     // Create enemy
 
@@ -82,7 +82,7 @@ Game.prototype.createEnemy = function(opts) {
         width: width,
         height: height,
         image: document.getElementById("enemy"),
-        speed: Math.max(Math.random(), 0.2) * 0.8,
+        speed: Math.max(Math.random(), 0.4) * 0.9,
         shootDelay: Math.max(2000, Math.random() * 6000),
         lastShot: 2000,
         moveType: 'left',
@@ -95,7 +95,7 @@ Game.prototype.createEnemy = function(opts) {
     game.objects.enemy[enemy.id] = enemy
 }
 
-Game.prototype.createFireball = function() {
+Game.prototype.createFireball = function(enemy) {
 
     const game = this
 
@@ -114,7 +114,7 @@ Game.prototype.createFireball = function() {
         height: height,
         image: document.getElementById('fireball'),
         speed: 1,
-        gameI: game.id,
+        gameID: game.id,
     })
     fireball.draw()
 
