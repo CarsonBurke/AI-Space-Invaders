@@ -1,7 +1,8 @@
 let displayTick = 0
 let displayGeneration = 0
 let displayPlayers = 0
-let displayBestScore = 0
+let displayBestScoreThisGeneration = 0
+let displayBestTotalScore = 0
 
 let tick = 0
 let lastReset = 0
@@ -13,7 +14,7 @@ function findAllPlayers(allGames) {
     for (const game of allGames) {
 
         for (const player of Object.values(game.objects.player)) {
-            
+
             allPlayers.push(player)
         }
     }
@@ -33,6 +34,8 @@ function reproduce(bestPlayer, allGames) {
 
     displayGeneration++
     lastReset = 0
+    displayBestScoreThisGeneration = 0
+    if (bestPlayer.score > displayBestTotalScore) displayBestTotalScore = bestPlayer.score
 
     // Delete old objects
 
@@ -106,7 +109,7 @@ function runTick() {
     const allPlayers = findAllPlayers(allGames)
 
     for (const game of allGames) {
-        
+
         // Find players
 
         const players = Object.values(game.objects.player)
@@ -149,7 +152,7 @@ function runTick() {
                 player.outputs = outputs
 
                 // Create network if player doesn't have one
-                
+
                 if (!player.network) player.createNetwork(inputs, outputs)
 
                 // Run network
@@ -175,7 +178,7 @@ function runTick() {
                         // Take action connected to output
 
                         if (i == 0) {
-                            
+
                             player.shoot(tick)
                             continue
                         }
@@ -198,7 +201,7 @@ function runTick() {
 
                 // If player is dead to a fireball set as not alive
 
-                if(player.isDead(fireballs)) game.stop(players)
+                if (player.isDead(fireballs)) game.stop(players)
 
                 // Hide player's visualsParent
 
@@ -293,7 +296,7 @@ function runTick() {
             for (const game of allGames) {
 
                 // Iterate if game isn't active
-                
+
                 if (!game.active) continue
 
                 const objects = game.objects
@@ -325,25 +328,28 @@ function runTick() {
             el = document.getElementById('players')
             el.innerText = displayPlayers
 
-            el = document.getElementById('bestScore')
-            el.innerText = displayBestScore
+            el = document.getElementById('bestTotalScore')
+            el.innerText = displayBestTotalScore
+
+            el = document.getElementById('bestScoreThisGeneration')
+            el.innerText = displayBestScoreThisGeneration
         }
     }
 
     const alivePlayers = allPlayers.filter(player => player.alive)
     displayPlayers = alivePlayers.length
-    
+
     const bestPlayer = findBestPlayer(allPlayers)
 
     if (alivePlayers.length == 0) {
-        
+
         reproduce(bestPlayer, allGames)
     }
 
-    if (bestPlayer.score > displayBestScore) displayBestScore = bestPlayer.score
+    if (bestPlayer.score > displayBestScoreThisGeneration) displayBestScoreThisGeneration = bestPlayer.score
 
     bestPlayer.network.updateVisuals()
 
     bestPlayer.network.visualsParent.classList.add('visualsParentShow')
-    
+
 }

@@ -7,7 +7,7 @@ let properties = {
     requiredPlayers: 10,
     maxEnemies: Infinity,
     nextId: 0,
-    speedMultiplier: 100,
+    speedMultiplier: 10000,
     map: {
         el: document.getElementById("map"),
     },
