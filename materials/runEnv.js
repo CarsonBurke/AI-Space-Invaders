@@ -147,8 +147,9 @@ function runTick() {
 
                 const outputs = [
                     { name: 'Shoot' },
-                    { name: 'Move left' },
-                    { name: 'Move right' },
+                    { name: 'Move to enemy' },
+                    /* { name: 'Move left' },
+                    { name: 'Move right' }, */
                 ]
                 player.outputs = outputs
 
@@ -185,6 +186,11 @@ function runTick() {
                         }
                         if (i == 1) {
 
+                            if (closestEnemy) player.moveToEnemy(enemy)
+                            return
+                        }
+                        /* if (i == 1) {
+
                             player.moveLeft()
                             continue
                         }
@@ -192,7 +198,7 @@ function runTick() {
 
                             player.moveRight()
                             continue
-                        }
+                        } */
                     }
 
                     // Record iteration

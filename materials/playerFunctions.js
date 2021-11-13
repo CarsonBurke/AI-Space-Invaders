@@ -37,6 +37,30 @@ Player.prototype.moveRight = function() {
     })
 }
 
+Player.prototype.moveToEnemy = function(enemy) {
+
+    const player = this
+
+    const playerMiddle = player.left + player.width / 2
+    const enemyMiddle = enemy.left + enemy.width / 2
+
+    // If enemy is to the left
+
+    if (playerMiddle > enemyMiddle) {
+
+        player.moveRight()
+        return
+    }
+
+    // If enemy is to the right
+
+    if (playerMiddle < enemyMiddle) {
+
+        player.moveLeft()
+        return
+    }
+}
+
 Player.prototype.createNetwork = function(inputs, outputs) {
 
     const player = this
