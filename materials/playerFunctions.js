@@ -48,7 +48,7 @@ Player.prototype.moveToEnemy = function(enemy) {
 
     if (playerMiddle > enemyMiddle) {
 
-        player.moveRight()
+        player.moveLeft()
         return
     }
 
@@ -56,7 +56,7 @@ Player.prototype.moveToEnemy = function(enemy) {
 
     if (playerMiddle < enemyMiddle) {
 
-        player.moveLeft()
+        player.moveRight()
         return
     }
 }

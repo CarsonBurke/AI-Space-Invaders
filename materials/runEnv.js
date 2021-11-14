@@ -119,13 +119,14 @@ function runTick() {
         const lasers = Object.values(game.objects.laser)
 
         // Find enemies
+
         const enemies = Object.values(game.objects.enemy)
         const closestEnemies = enemies.sort((a, b) => a.bottom - b.bottom)
         const closestEnemy = closestEnemies[closestEnemies.length - 1]
 
         // Find fireballs
+
         const fireballs = Object.values(game.objects.fireball)
-        const closestFireballs = fireballs.sort((a, b) => a.bottom - b.bottom)
 
         //
 
@@ -140,7 +141,7 @@ function runTick() {
                 const inputs = [
                     { name: 'Player x', value: player.left + player.width / 2 },
                     { name: 'Closest enemy  x', value: closestEnemy ? closestEnemy.left + closestEnemy.width / 2 : 0 },
-                    { name: 'Closest enemy  y', value: closestEnemy ? closestEnemy.bottom : 0 },
+                    { name: 'Closest enemy  y', value: closestEnemy ? closestEnemy.y : 0 },
                     /* { name: 'Closest fireball  x', value: closestFireball ? closestFireball.left - closestFireball.width / 2 : 0 }, */
                 ]
                 player.inputs = inputs
@@ -186,7 +187,7 @@ function runTick() {
                         }
                         if (i == 1) {
 
-                            if (closestEnemy) player.moveToEnemy(enemy)
+                            if (closestEnemy) player.moveToEnemy(closestEnemy)
                             return
                         }
                         /* if (i == 1) {
