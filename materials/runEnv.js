@@ -188,7 +188,7 @@ function runTick() {
                         if (i == 1) {
 
                             if (closestEnemy) player.moveToEnemy(closestEnemy)
-                            return
+                            continue
                         }
                         /* if (i == 1) {
 
