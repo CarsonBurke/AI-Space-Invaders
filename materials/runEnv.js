@@ -141,7 +141,7 @@ function runTick() {
                 const inputs = [
                     { name: 'Player x', value: player.left + player.width / 2 },
                     { name: 'Closest enemy  x', value: closestEnemy ? closestEnemy.left + closestEnemy.width / 2 : 0 },
-                    { name: 'Closest enemy  y', value: closestEnemy ? closestEnemy.y : 0 },
+                    /* { name: 'Closest enemy  y', value: closestEnemy ? closestEnemy.y : 0 }, */
                     /* { name: 'Closest fireball  x', value: closestFireball ? closestFireball.left - closestFireball.width / 2 : 0 }, */
                 ]
                 player.inputs = inputs
@@ -168,11 +168,15 @@ function runTick() {
 
                 // Track iterations and loop through output perceptrons
 
-                let i = 0
+                let i = -1
 
                 for (const perceptronName in lastLayer.perceptrons) {
 
                     const perceptron = lastLayer.perceptrons[perceptronName]
+
+                    // Record iteration
+
+                    i++
 
                     // Iterate if output is 0
 
@@ -201,10 +205,6 @@ function runTick() {
                             continue
                         } */
                     }
-
-                    // Record iteration
-
-                    i++
                 }
 
                 // If player is dead to a fireball set as not alive
@@ -235,7 +235,7 @@ function runTick() {
 
         function runEnemies() {
 
-            if ((lastReset == 1 || lastReset % 100 == 0) && game.spawning) {
+            if ((lastReset == 1 || lastReset % 500 == 0) && game.spawning) {
 
                 game.createEnemy()
                 game.spawnedEnemies++

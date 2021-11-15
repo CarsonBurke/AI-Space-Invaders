@@ -4,7 +4,7 @@ let properties = {
     mapDimensions: 700,
     gridPartSize: 25,
     gamesAmount: 1,
-    requiredPlayers: 10,
+    requiredPlayers: 100,
     maxEnemies: Infinity,
     nextId: 0,
     speedMultiplier: 10000,
