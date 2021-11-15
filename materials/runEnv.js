@@ -30,7 +30,7 @@ function findBestPlayers(alivePlayers) {
 
     // If there are no players with a positive score, use allPlayers
 
-    playersWithScore = alivePlayers
+    if (playersWithScore.length == 0) playersWithScore = alivePlayers
 
     const bestPlayers = playersWithScore.sort(function(a, b) { a.score - b.score })
     return bestPlayers
@@ -166,7 +166,7 @@ function runTick() {
                 const inputs = [
                     { name: 'Player x', value: player.left + player.width / 2 },
                     { name: 'Closest enemy  x', value: closestEnemy ? closestEnemy.left + closestEnemy.width / 2 : 0 },
-                    /* { name: 'Closest enemy  y', value: closestEnemy ? closestEnemy.y : 0 }, */
+                    { name: 'Closest enemy  y', value: closestEnemy ? closestEnemy.y : 0 },
                     /* { name: 'Closest fireball  x', value: closestFireball ? closestFireball.left - closestFireball.width / 2 : 0 }, */
                 ]
                 player.inputs = inputs
