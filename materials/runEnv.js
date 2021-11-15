@@ -22,13 +22,21 @@ function findAllPlayers(allGames) {
     return allPlayers
 }
 
-function findBestPlayer(alivePlayers) {
+function findBestPlayers(alivePlayers) {
 
-    const bestPlayers = alivePlayers.sort(function(a, b) { a.score - b.score })
-    return bestPlayers[bestPlayers.length - 1]
+    // Filter players that have a positive score
+
+    let playersWithScore = alivePlayers.filter(player => player.score > 0)
+
+    // If there are no players with a positive score, use allPlayers
+
+    playersWithScore = alivePlayers
+
+    const bestPlayers = playersWithScore.sort(function(a, b) { a.score - b.score })
+    return bestPlayers
 }
 
-function reproduce(bestPlayer, allGames) {
+function reproduce(bestPlayers, allGames) {
 
     // Record stats
 
@@ -52,7 +60,9 @@ function reproduce(bestPlayer, allGames) {
 
                 if (type == 'player') {
 
-                    if (id == bestPlayer.id) continue
+                    // If the player is a bestPlayer iterate
+
+                    if (bestPlayers.includes(object)) continue
 
                     object.kill()
                 }
@@ -61,6 +71,8 @@ function reproduce(bestPlayer, allGames) {
             }
         }
     }
+    
+    let reproducingPlayerIndex = 0
 
     // Reconfigure games
 
@@ -74,15 +86,29 @@ function reproduce(bestPlayer, allGames) {
 
         for (let i = 0; i < requiredPlayers; i++) {
 
-            const duplicateNetwork = bestPlayer.network.clone(bestPlayer.inputs, bestPlayer.outputs)
+            let reproducingPlayer = bestPlayers[reproducingPlayerIndex]
+            if (!reproducingPlayer) {
+
+                reproducingPlayerIndex = 0
+                reproducingPlayer = bestPlayers[reproducingPlayerIndex]
+            }
+
+            const duplicateNetwork = reproducingPlayer.network.clone(reproducingPlayer.inputs, reproducingPlayer.outputs)
 
             game.createPlayer({ network: duplicateNetwork.learn() })
+
+            reproducingPlayerIndex++
         }
     }
 
-    // Kill bestPlayer
+    // Loop through bestPlayers
 
-    bestPlayer.kill()
+    for (const player of bestPlayers) {
+
+        // Kill player
+
+        player.kill()
+    }
 }
 
 function run(tickSpeed) {
@@ -348,11 +374,12 @@ function runTick() {
     const alivePlayers = allPlayers.filter(player => player.alive)
     displayPlayers = alivePlayers.length
 
-    const bestPlayer = findBestPlayer(allPlayers)
+    const bestPlayers = findBestPlayers(allPlayers)
+    const bestPlayer = bestPlayers[bestPlayers.length - 1]
 
     if (alivePlayers.length == 0) {
 
-        reproduce(bestPlayer, allGames)
+        reproduce(bestPlayers, allGames)
     }
 
     if (bestPlayer.score > displayBestScoreThisGeneration) displayBestScoreThisGeneration = bestPlayer.score

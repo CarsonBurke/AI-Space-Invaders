@@ -4,11 +4,11 @@ let properties = {
     mapDimensions: 700,
     gridPartSize: 25,
     gamesAmount: 1,
-    requiredPlayers: 25,
+    requiredPlayers: 100,
     maxEnemies: Infinity,
     nextId: 0,
     speedMultiplier: 100000,
-    animateSpritesSkip: 1000,
+    animateSpritesSkip: 10,
     map: {
         el: document.getElementById("map"),
     },
