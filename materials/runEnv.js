@@ -285,6 +285,8 @@ function runTick() {
 
         function updateObjectPositions() {
 
+            if (tick % animateSpritesSkip != 0) return
+
             // Store the current transformation matrix
 
             map.cr.save()
