@@ -71,7 +71,7 @@ Player.prototype.createNetwork = function(inputs, outputs) {
 
     // Create layers
 
-    const layerCount = 2
+    const layerCount = 3
 
     for (let i = 0; i < layerCount; i++) network.addLayer({})
 

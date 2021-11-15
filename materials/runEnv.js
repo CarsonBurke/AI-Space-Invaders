@@ -35,7 +35,6 @@ function reproduce(bestPlayer, allGames) {
     displayGeneration++
     lastReset = 0
     displayBestScoreThisGeneration = 0
-    if (bestPlayer.score > displayBestTotalScore) displayBestTotalScore = bestPlayer.score
 
     // Delete old objects
 
@@ -148,9 +147,9 @@ function runTick() {
 
                 const outputs = [
                     { name: 'Shoot' },
-                    { name: 'Move to enemy' },
-                    /* { name: 'Move left' },
-                    { name: 'Move right' }, */
+                    /* { name: 'Move to enemy' }, */
+                    { name: 'Move left' },
+                    { name: 'Move right' },
                 ]
                 player.outputs = outputs
 
@@ -189,12 +188,12 @@ function runTick() {
                             player.shoot(tick)
                             continue
                         }
-                        if (i == 1) {
+                        /* if (i == 1) {
 
                             if (closestEnemy) player.moveToEnemy(closestEnemy)
                             continue
-                        }
-                        /* if (i == 1) {
+                        } */
+                        if (i == 1) {
 
                             player.moveLeft()
                             continue
@@ -203,7 +202,7 @@ function runTick() {
 
                             player.moveRight()
                             continue
-                        } */
+                        }
                     }
                 }
 
@@ -355,6 +354,7 @@ function runTick() {
     }
 
     if (bestPlayer.score > displayBestScoreThisGeneration) displayBestScoreThisGeneration = bestPlayer.score
+    if (bestPlayer.score > displayBestTotalScore) displayBestTotalScore = bestPlayer.score
 
     bestPlayer.network.updateVisuals()
 
