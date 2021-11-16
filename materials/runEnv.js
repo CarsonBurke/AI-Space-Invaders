@@ -101,14 +101,9 @@ function reproduce(bestPlayers, allGames) {
         }
     }
 
-    // Loop through bestPlayers
+    // Loop through bestPlayers and kill them
 
-    for (const player of bestPlayers) {
-
-        // Kill player
-
-        player.kill()
-    }
+    for (const player of bestPlayers) player.kill()
 }
 
 function run(tickSpeed) {
