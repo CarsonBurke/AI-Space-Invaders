@@ -78,6 +78,8 @@ function reproduce(bestPlayers, allGames) {
 
     for (const game of allGames) {
 
+        // Reset game to default
+
         game.active = true
         game.spawnedEnemies = 0
         game.spawning = true
@@ -86,17 +88,28 @@ function reproduce(bestPlayers, allGames) {
 
         for (let i = 0; i < requiredPlayers; i++) {
 
+            // Assign reproducingPlayer based on reproducing index
+
             let reproducingPlayer = bestPlayers[reproducingPlayerIndex]
+
+            // If there is no reproducingPlayer
+
             if (!reproducingPlayer) {
+
+                // Set reproducing index to 0, assign reproducing player based on it
 
                 reproducingPlayerIndex = 0
                 reproducingPlayer = bestPlayers[reproducingPlayerIndex]
             }
 
+            // Create new network and have it learn
+
             const duplicateNetwork = reproducingPlayer.network.clone(reproducingPlayer.inputs, reproducingPlayer.outputs)
+            duplicateNetwork.learn()
 
-            game.createPlayer({ network: duplicateNetwork.learn() })
+            // Create new player with new network and increment reproducing index
 
+            game.createPlayer({ network: duplicateNetwork })
             reproducingPlayerIndex++
         }
     }
@@ -157,7 +170,7 @@ function runTick() {
             for (const player of players) {
 
                 // Define inputs and outputs
-
+                
                 const inputs = [
                     { name: 'Player x', value: player.left + player.width / 2 },
                     { name: 'Closest enemy  x', value: closestEnemy ? closestEnemy.left + closestEnemy.width / 2 : 0 },

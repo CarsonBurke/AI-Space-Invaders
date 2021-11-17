@@ -22,7 +22,7 @@ Player.prototype.moveLeft = function() {
     if (player.left <= 10) return
 
     player.move({
-        x: player.x -= 1
+        x: player.x - 1
     })
 }
 
@@ -33,7 +33,7 @@ Player.prototype.moveRight = function() {
     if (player.right >= map.el.width - 10) return
 
     player.move({
-        x: player.x += 1
+        x: player.x + 1
     })
 }
 

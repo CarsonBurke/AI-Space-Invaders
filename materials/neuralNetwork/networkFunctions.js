@@ -15,7 +15,7 @@ NeuralNetwork.prototype.forwardPropagate = function(inputs) {
 
     const network = this
 
-    function findInputs(layerName, perceptron) {
+    function findInputs(layerName, perceptron, perceptronName) {
 
         let newInputs = [network.bias]
 
@@ -25,7 +25,7 @@ NeuralNetwork.prototype.forwardPropagate = function(inputs) {
 
             // Add values from default inputs
 
-            for (let inputObject of inputs) newInputs.push(inputObject.value)
+            newInputs.push(Object.values(inputs)[perceptronName].value)
 
             return newInputs
         }
@@ -72,10 +72,11 @@ NeuralNetwork.prototype.forwardPropagate = function(inputs) {
 
             // Run the perceptron
 
-            perceptron.run(findInputs(layerName, perceptron))
+            perceptron.run(findInputs(layerName, perceptron, perceptronName))
         }
     }
 }
+
 NeuralNetwork.prototype.learn = function() {
 
     const network = this

@@ -82,7 +82,7 @@ Game.prototype.createEnemy = function() {
         width: width,
         height: height,
         image: document.getElementById("enemy"),
-        speed: Math.max(Math.random(), 0.4) * 0.9,
+        speed: Math.max(Math.random(), 0.06) * 0.15,
         shootDelay: Math.max(2000, Math.random() * 6000),
         lastShot: 2000,
         moveType: 'left',

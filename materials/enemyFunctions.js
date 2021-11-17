@@ -5,57 +5,8 @@ Enemy.prototype.moveDown = function() {
     // Move down
 
     enemy.move({
-        y: enemy.y + enemy.speed / 5
+        y: enemy.y + enemy.speed
     })
-
-    /* if (enemy.moveType == 'left') {
-
-        // Move left
-
-        enemy.move({
-            x: enemy.x - enemy.speed
-        })
-
-        //
-
-        if (enemy.left <= 0) {
-
-            // Move down
-
-            enemy.move({
-                y: enemy.y + enemy.height
-            })
-
-            //
-
-            enemy.moveType = 'right'
-        }
-
-        return
-    }
-    if (enemy.moveType == 'right') {
-
-        // Move right
-
-        enemy.move({
-            x: enemy.x + enemy.speed
-        })
-
-        if (enemy.right >= map.el.width) {
-
-            // Move down
-
-            enemy.move({
-                y: enemy.y + enemy.height
-            })
-
-            //
-
-            enemy.moveType = 'left'
-        }
-
-        return
-    } */
 }
 
 Enemy.prototype.shoot = function(tick) {
