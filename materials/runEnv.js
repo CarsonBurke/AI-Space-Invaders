@@ -174,7 +174,7 @@ function runTick() {
                 const inputs = [
                     { name: 'Player x', value: player.left + player.width / 2 },
                     { name: 'Closest enemy  x', value: closestEnemy ? closestEnemy.left + closestEnemy.width / 2 : 0 },
-                    { name: 'Closest enemy  y', value: closestEnemy ? closestEnemy.y : 0 },
+                    /* { name: 'Closest enemy  y', value: closestEnemy ? closestEnemy.y : 0 }, */
                     /* { name: 'Closest fireball  x', value: closestFireball ? closestFireball.left - closestFireball.width / 2 : 0 }, */
                 ]
                 player.inputs = inputs
