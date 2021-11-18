@@ -33,6 +33,13 @@ function findBestPlayers(alivePlayers) {
     if (playersWithScore.length == 0) playersWithScore = alivePlayers
 
     const bestPlayers = playersWithScore.sort(function(a, b) { a.score - b.score })
+
+    // Reverse array
+
+    bestPlayers.reverse()
+
+    // Inform bestPlayers
+
     return bestPlayers
 }
 
@@ -383,7 +390,7 @@ function runTick() {
     displayPlayers = alivePlayers.length
 
     const bestPlayers = findBestPlayers(allPlayers)
-    const bestPlayer = bestPlayers[bestPlayers.length - 1]
+    const bestPlayer = bestPlayers[0]
 
     if (alivePlayers.length == 0) {
 
