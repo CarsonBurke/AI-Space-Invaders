@@ -4,16 +4,12 @@ function init() {
 
     // Style map width and height
 
-    map.el.width = mapDimensions
-    map.el.height = mapDimensions
+    map.el.width = mapWidth
+    map.el.height = mapHeight
 
     // Disable anti aliasing
 
     map.cr.imageSmoothingEnabled = false
-
-    // Dimensions / number of tiles will give size
-
-    globalThis.gridSize = mapDimensions / gridPartSize
 
     // Generate sprites
 

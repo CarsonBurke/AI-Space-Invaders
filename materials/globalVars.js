@@ -1,7 +1,8 @@
 // Assign variables
 
 let properties = {
-    mapDimensions: 700,
+    mapWidth: 1000,
+    mapHeight: 700,
     gridPartSize: 25,
     gamesAmount: 1,
     requiredPlayers: 100,
