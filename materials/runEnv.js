@@ -237,12 +237,12 @@ function runTick() {
                         if (i == 1) {
 
                             player.moveLeft()
-                            continue
+                            break
                         }
                         if (i == 2) {
 
                             player.moveRight()
-                            continue
+                            break
                         }
                     }
                 }
