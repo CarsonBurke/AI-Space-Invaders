@@ -6,10 +6,3 @@ Fireball.prototype.moveDown = function() {
         top: fireball.top + fireball.speed
     })
 }
-
-Fireball.prototype.delete = function() {
-
-    const fireball = this
-
-    delete games[fireball.gameID].objects[fireball.type][fireball.id]
-}

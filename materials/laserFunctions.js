@@ -7,13 +7,6 @@ Laser.prototype.moveUp = function() {
     })
 }
 
-Laser.prototype.delete = function() {
-
-    const laser = this
-
-    delete games[laser.gameID].objects[laser.type][laser.id]
-}
-
 Laser.prototype.canKillEnemy = function(enemies, fireballs) {
 
     const laser = this
@@ -24,7 +17,7 @@ Laser.prototype.canKillEnemy = function(enemies, fireballs) {
 
         // Iterate if the enemy doesn't exist
 
-        if (!enemy) continue
+        if (!enemy.exists()) continue
 
         // If laser is inside enemy
 

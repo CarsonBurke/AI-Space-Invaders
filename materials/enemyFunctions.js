@@ -25,10 +25,3 @@ Enemy.prototype.shoot = function(tick) {
 
     enemy.lastShot = tick
 }
-
-Enemy.prototype.delete = function() {
-
-    const enemy = this
-
-    delete games[enemy.gameID].objects[enemy.type][enemy.id]
-}

@@ -114,15 +114,6 @@ Player.prototype.createNetwork = function(inputs, outputs) {
     player.network = network
 }
 
-Player.prototype.delete = function() {
-
-    const player = this
-
-    player.network.visualsParent.remove()
-
-    delete games[player.gameID].objects[player.type][player.id]
-}
-
 Player.prototype.isDead = function(fireballs) {
 
     const player = this

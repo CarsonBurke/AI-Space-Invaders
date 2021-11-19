@@ -201,7 +201,7 @@ function runTick() {
                 player.outputs = outputs
 
                 // Create network if player doesn't have one
-
+                
                 if (!player.network) player.createNetwork(inputs, outputs)
 
                 // Run network
@@ -293,10 +293,6 @@ function runTick() {
 
             for (const enemy of enemies) {
 
-                // Iterate if the enemy doesn't exist
-
-                if (!enemy) continue
-
                 // Move enemy
 
                 enemy.moveDown()
@@ -309,10 +305,6 @@ function runTick() {
             // Loop through enemies of closestFewEnemies
 
             for (const enemy of closestFewEnemies) {
-
-                // Iterate if the enemy doesn't exist
-
-                if (!enemy) continue
 
                 // If the enemy reaches the bottom of the map, inform to restart
 
