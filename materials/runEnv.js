@@ -281,7 +281,7 @@ function runTick() {
 
         function runEnemies() {
 
-            if ((lastReset == 1 || (lastReset % (500 - game.spawnedEnemies)) == 0) && game.spawning) {
+            if ((lastReset == 1 || (lastReset % Math.max(0, 500 - game.spawnedEnemies)) == 0) && game.spawning) {
 
                 game.createEnemy()
                 game.spawnedEnemies++
