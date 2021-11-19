@@ -114,7 +114,7 @@ Player.prototype.createNetwork = function(inputs, outputs) {
     player.network = network
 }
 
-Player.prototype.kill = function() {
+Player.prototype.delete = function() {
 
     const player = this
 

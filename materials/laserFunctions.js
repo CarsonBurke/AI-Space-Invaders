@@ -3,7 +3,7 @@ Laser.prototype.moveUp = function() {
     const laser = this
 
     laser.move({
-        y: laser.y -= laser.speed
+        y: laser.y - laser.speed
     })
 }
 
@@ -17,6 +17,8 @@ Laser.prototype.delete = function() {
 Laser.prototype.canKillEnemy = function(enemies, fireballs) {
 
     const laser = this
+    const game = games[laser.gameID]
+    const player = game.objects.player[laser.playerID]
 
     for (const enemy of enemies) {
 
@@ -28,11 +30,11 @@ Laser.prototype.canKillEnemy = function(enemies, fireballs) {
 
             // Add to laser's player's score
 
-            laser.player.score += 1
+            player.score += 1
 
             // Kill enemy
 
-            enemy.kill()
+            enemy.delete()
 
             // Delete laser
 

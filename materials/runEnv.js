@@ -3,6 +3,7 @@ let displayGeneration = 0
 let displayPlayers = 0
 let displayBestScoreThisGeneration = 0
 let displayBestTotalScore = 0
+let displayTotalScoreThisGeneration = 0
 
 let tick = 0
 let lastReset = 0
@@ -71,7 +72,7 @@ function reproduce(bestPlayers, allGames) {
 
                     if (bestPlayers.includes(object)) continue
 
-                    object.kill()
+                    object.delete()
                 }
 
                 delete game.objects[type][id]
@@ -123,7 +124,7 @@ function reproduce(bestPlayers, allGames) {
 
     // Loop through bestPlayers and kill them
 
-    for (const player of bestPlayers) player.kill()
+    for (const player of bestPlayers) player.delete()
 }
 
 function run(tickSpeed) {
@@ -143,6 +144,7 @@ function runTick() {
     lastReset++
 
     displayTick = tick
+    displayTotalScoreThisGeneration = 0
 
     const allGames = Object.values(games)
 
@@ -175,6 +177,10 @@ function runTick() {
         function runPlayers() {
 
             for (const player of players) {
+
+                // Increase total gen score by player's score
+
+                displayTotalScoreThisGeneration += player.score
 
                 // Define inputs and outputs
                 
@@ -383,6 +389,9 @@ function runTick() {
 
             el = document.getElementById('bestScoreThisGeneration')
             el.innerText = displayBestScoreThisGeneration
+
+            el = document.getElementById('totalScoreThisGeneration')
+            el.innerText = displayTotalScoreThisGeneration
         }
     }
 

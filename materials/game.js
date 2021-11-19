@@ -58,7 +58,13 @@ class Sprite {
     }
     draw() {
 
-        map.cr.drawImage(this.image, this.x, this.y, this.width, this.height)
+        // Find image el
+
+        const imageEl = document.getElementById(this.imageID)
+
+        // Draw image
+
+        map.cr.drawImage(imageEl, this.x, this.y, this.width, this.height)
     }
     move(opts) {
 

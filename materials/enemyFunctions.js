@@ -26,7 +26,7 @@ Enemy.prototype.shoot = function(tick) {
     enemy.lastShot = tick
 }
 
-Enemy.prototype.kill = function() {
+Enemy.prototype.delete = function() {
 
     const enemy = this
 
