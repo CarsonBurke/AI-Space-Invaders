@@ -45,12 +45,10 @@ class Sprite {
 
         this.id = newId()
 
-        // Designate hitboxes
+        // Designate right and bottom
 
-        this.top = this.y
-        this.left = this.x
-        this.bottom = this.y + this.height
-        this.right = this.x + this.width
+        this.bottom = this.top + this.height
+        this.right = this.left + this.width
 
         //
 
@@ -64,7 +62,7 @@ class Sprite {
 
         // Draw image
 
-        map.cr.drawImage(imageEl, this.x, this.y, this.width, this.height)
+        map.cr.drawImage(imageEl, this.left, this.top, this.width, this.height)
     }
     move(opts) {
 
@@ -77,10 +75,10 @@ class Sprite {
 
         // Designate hitboxes
 
-        this.top = this.y
-        this.left = this.x
-        this.bottom = this.y + this.height
-        this.right = this.x + this.width
+        this.top = this.top
+        this.left = this.left
+        this.bottom = this.top + this.height
+        this.right = this.left + this.width
     }
 }
 

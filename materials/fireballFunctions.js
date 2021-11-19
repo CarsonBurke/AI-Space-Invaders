@@ -3,7 +3,7 @@ Fireball.prototype.moveDown = function() {
     const fireball = this
 
     fireball.move({
-        y: fireball.y + fireball.speed
+        top: fireball.top + fireball.speed
     })
 }
 

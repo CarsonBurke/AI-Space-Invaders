@@ -11,8 +11,8 @@ Game.prototype.createPlayer = function(opts) {
 
     const player = new Player({
         type: "player",
-        x: map.el.width * 0.5 - width * 0.5,
-        y: map.el.height - 55,
+        left: map.el.width * 0.5 - width * 0.5,
+        top: map.el.height - 55,
         width: width,
         height: height,
         imageID: 'player',
@@ -43,8 +43,8 @@ Game.prototype.createLaser = function(player) {
 
     const laser = new Laser({
         type: 'laser',
-        x: player.left + player.width * 0.5 - width / 2,
-        y: player.top - height + 15,
+        left: player.left + player.width * 0.5 - width / 2,
+        top: player.top - height + 15,
         width: width,
         height: height,
         imageID: 'laser',
@@ -77,8 +77,8 @@ Game.prototype.createEnemy = function() {
 
     const enemy = new Enemy({
         type: "enemy",
-        x: x,
-        y: 0,
+        left: x,
+        top: 0,
         width: width,
         height: height,
         imageID: 'enemy',
@@ -108,8 +108,8 @@ Game.prototype.createFireball = function(enemy) {
 
     const fireball = new Fireball({
         type: 'fireball',
-        x: enemy.left + enemy.width * 0.5 - width / 2,
-        y: enemy.top - height + 15,
+        left: enemy.left + enemy.width * 0.5 - width / 2,
+        top: enemy.top - height + 15,
         width: width,
         height: height,
         imageID: 'fireball',

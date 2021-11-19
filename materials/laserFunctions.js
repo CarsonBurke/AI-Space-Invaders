@@ -3,7 +3,7 @@ Laser.prototype.moveUp = function() {
     const laser = this
 
     laser.move({
-        y: laser.y - laser.speed
+        top: laser.top - laser.speed
     })
 }
 

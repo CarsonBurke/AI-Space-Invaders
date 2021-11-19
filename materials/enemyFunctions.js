@@ -5,7 +5,7 @@ Enemy.prototype.moveDown = function() {
     // Move down
 
     enemy.move({
-        y: enemy.y + enemy.speed
+        top: enemy.top + enemy.speed
     })
 }
 
