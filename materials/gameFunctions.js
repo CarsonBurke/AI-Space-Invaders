@@ -68,16 +68,21 @@ Game.prototype.createEnemy = function() {
     const width = 36
     const height = 27
 
-    let x = Math.random() * map.el.width
+    const min = width * 4
+    const max = map.el.width - width * 2
 
-    x = Math.max(width * 4, x)
-    x = Math.min(x - width * 2, x)
+    let left = 0
+
+    while (left < min || left > max) {
+
+        left = Math.random() * map.el.width
+    }
 
     // Create enemy
 
     const enemy = new Enemy({
         type: "enemy",
-        left: x,
+        left: left,
         top: 0,
         width: width,
         height: height,
