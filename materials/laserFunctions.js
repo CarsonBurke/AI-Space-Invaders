@@ -22,6 +22,10 @@ Laser.prototype.canKillEnemy = function(enemies, fireballs) {
 
     for (const enemy of enemies) {
 
+        // Iterate if the enemy doesn't exist
+
+        if (!enemy) continue
+
         // If laser is inside enemy
 
         if (laser.top <= enemy.bottom &&
