@@ -178,10 +178,6 @@ function runTick() {
 
             for (const player of players) {
 
-                // Increase total gen score by player's score
-
-                displayTotalScoreThisGeneration += player.score
-
                 // Define inputs and outputs
                 
                 const inputs = [
@@ -260,6 +256,14 @@ function runTick() {
                 // Hide player's visualsParent
 
                 player.network.visualsParent.classList.remove('visualsParentShow')
+
+                // Increase total gen score by player's score
+
+                displayTotalScoreThisGeneration += player.score
+
+                // Set imageID to default
+
+                player.imageID = 'player'
             }
         }
 
@@ -328,6 +332,39 @@ function runTick() {
             }
         }
 
+        bestPlayer()
+
+        function bestPlayer() {
+
+            const alivePlayers = allPlayers.filter(player => player.alive)
+            displayPlayers = alivePlayers.length
+        
+            const bestPlayers = findBestPlayers(allPlayers)
+            const bestPlayer = bestPlayers[0]
+        
+            if (alivePlayers.length == 0) {
+        
+                reproduce(bestPlayers, allGames)
+            }
+        
+            // If the bestPlayer has more than 0 score set imageID to bestPlayer
+        
+            if(bestPlayer.score > 0) bestPlayer.imageID = 'bestPlayer'
+        
+            //
+        
+            if (bestPlayer.score > displayBestScoreThisGeneration) displayBestScoreThisGeneration = bestPlayer.score
+            if (bestPlayer.score > displayBestScore) displayBestScore = bestPlayer.score
+        
+            //
+        
+            bestPlayer.network.updateVisuals()
+        
+            //
+        
+            bestPlayer.network.visualsParent.classList.add('visualsParentShow')
+        }
+
         updateObjectPositions()
 
         function updateObjectPositions() {
@@ -394,23 +431,4 @@ function runTick() {
             el.innerText = displayTotalScoreThisGeneration
         }
     }
-
-    const alivePlayers = allPlayers.filter(player => player.alive)
-    displayPlayers = alivePlayers.length
-
-    const bestPlayers = findBestPlayers(allPlayers)
-    const bestPlayer = bestPlayers[0]
-
-    if (alivePlayers.length == 0) {
-
-        reproduce(bestPlayers, allGames)
-    }
-
-    if (bestPlayer.score > displayBestScoreThisGeneration) displayBestScoreThisGeneration = bestPlayer.score
-    if (bestPlayer.score > displayBestScore) displayBestScore = bestPlayer.score
-
-    bestPlayer.network.updateVisuals()
-
-    bestPlayer.network.visualsParent.classList.add('visualsParentShow')
-
 }
