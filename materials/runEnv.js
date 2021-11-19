@@ -2,7 +2,7 @@ let displayTick = 0
 let displayGeneration = 0
 let displayPlayers = 0
 let displayBestScoreThisGeneration = 0
-let displayBestTotalScore = 0
+let displayBestScore = 0
 let displayTotalScoreThisGeneration = 0
 
 let tick = 0
@@ -392,8 +392,8 @@ function runTick() {
             el = document.getElementById('players')
             el.innerText = displayPlayers
 
-            el = document.getElementById('bestTotalScore')
-            el.innerText = displayBestTotalScore
+            el = document.getElementById('bestScore')
+            el.innerText = displayBestScore
 
             el = document.getElementById('bestScoreThisGeneration')
             el.innerText = displayBestScoreThisGeneration
@@ -415,7 +415,7 @@ function runTick() {
     }
 
     if (bestPlayer.score > displayBestScoreThisGeneration) displayBestScoreThisGeneration = bestPlayer.score
-    if (bestPlayer.score > displayBestTotalScore) displayBestTotalScore = bestPlayer.score
+    if (bestPlayer.score > displayBestScore) displayBestScore = bestPlayer.score
 
     bestPlayer.network.updateVisuals()
 
