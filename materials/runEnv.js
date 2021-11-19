@@ -72,7 +72,7 @@ function reproduce(bestPlayers, allGames) {
 
                     if (bestPlayers.includes(object)) continue
 
-                    object.delete()
+                    object.kill()
                 }
 
                 delete game.objects[type][id]
@@ -124,7 +124,7 @@ function reproduce(bestPlayers, allGames) {
 
     // Loop through bestPlayers and kill them
 
-    for (const player of bestPlayers) player.delete()
+    for (const player of bestPlayers) player.kill()
 }
 
 function run(tickSpeed) {
