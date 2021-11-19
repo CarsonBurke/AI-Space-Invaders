@@ -7,6 +7,7 @@ let properties = {
     gamesAmount: 1,
     requiredPlayers: 100,
     maxEnemies: Infinity,
+    increasedSpawning: false,
     nextId: 0,
     speedMultiplier: 100000,
     animateSpritesSkip: 10,
