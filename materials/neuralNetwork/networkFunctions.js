@@ -23,7 +23,7 @@ NeuralNetwork.prototype.forwardPropagate = function(inputs) {
 
         if (layerName == 0) {
 
-            // Add values from default inputs
+            // Assign input value relative to perceptronName
 
             newInputs.push(Object.values(inputs)[perceptronName].value)
 
@@ -54,7 +54,7 @@ NeuralNetwork.prototype.forwardPropagate = function(inputs) {
 
             newInputs.push(0)
         }
-        
+
         return newInputs
     }
 
@@ -245,7 +245,7 @@ NeuralNetwork.prototype.createTextVisuals = function(inputs, outputs) {
         textVisual.classList.add('textVisual')
 
         textVisual.style.top = perceptron.visual.getBoundingClientRect().top + perceptron.visual.offsetHeight / 4 - network.visualsParent.getBoundingClientRect().top + 'px'
-        textVisual.style.right =  network.visualsParent.getBoundingClientRect().left - perceptron.visual.getBoundingClientRect().left + Object.keys(network.layers).length * network.layerVisualWidth + 10 + 'px'
+        textVisual.style.right = network.visualsParent.getBoundingClientRect().left - perceptron.visual.getBoundingClientRect().left + Object.keys(network.layers).length * network.layerVisualWidth + 10 + 'px'
 
         textVisual.style.textAlign = 'right'
 
@@ -296,12 +296,12 @@ NeuralNetwork.prototype.mutateLine = function(line) {
 
     // Decide if to subract or add
 
-    let boolean = Math.floor(Math.random() * 2)
+    let adjustType = Math.floor(Math.random() * 2)
 
     // Enable line if 0
 
-    if (boolean == 0) {
-        
+    if (adjustType == 0) {
+
         // Stop if line is already connected
 
         if (line.connected) return
@@ -318,7 +318,7 @@ NeuralNetwork.prototype.mutateLine = function(line) {
 
     // Disable line if 1
 
-    if (boolean == 1) {
+    if (adjustType == 1) {
 
         // Stop if line is already not connected
 
@@ -334,17 +334,7 @@ NeuralNetwork.prototype.mutateLine = function(line) {
         return
     }
 }
-NeuralNetwork.prototype.updateLine = function(line) {
 
-    const network = this
-
-    const el = line.el
-
-    if (line.connected && line.perceptron1.activateValue > 0) {
-
-        el.classList.add("lineActive")
-    } else el.classList.remove("lineActive")
-}
 NeuralNetwork.prototype.updateVisuals = function() {
 
     const network = this
@@ -358,19 +348,10 @@ NeuralNetwork.prototype.updateVisuals = function() {
         for (const perceptronName in layer.perceptrons) {
 
             const perceptron = layer.perceptrons[perceptronName]
+            
+            // Update perceptron's visuals
 
-            // If perceptron's activateValue is 0
-
-            if (perceptron.activateValue == 0) {
-
-                // Display 0 and iterate
-                perceptron.visual.innerText = 0
-                continue
-            }
-
-            // Show perceptrons activateValue
-
-            perceptron.visual.innerText = (perceptron.activateValue).toFixed(2)
+            perceptron.updateVisual()
         }
 
         // Loop through lines in layer
@@ -379,7 +360,7 @@ NeuralNetwork.prototype.updateVisuals = function() {
 
             const line = layer.lines[lineID]
 
-            network.updateLine(line)
+            line.updateVisual()
         }
     }
 }
@@ -442,10 +423,10 @@ NeuralNetwork.prototype.clone = function(inputs, outputs) {
         for (const perceptronName in layer.perceptrons) {
 
             const perceptron = layer.perceptrons[perceptronName]
-            
+
             newLayer.addPerceptron()
             const newPerceptron = newLayer.perceptrons[perceptronName]
-            
+
             newPerceptron.weights = perceptron.weights
         }
     }
@@ -473,7 +454,7 @@ NeuralNetwork.prototype.clone = function(inputs, outputs) {
             const newLayerLineID = Object.keys(newLayer.lines)[i]
 
             // Assign line property to newNeuralNetwork's adjacent line
-            
+
             newLayer.lines[newLayerLineID].connected = line.connected
 
             //
@@ -485,6 +466,8 @@ NeuralNetwork.prototype.clone = function(inputs, outputs) {
             i++
         }
     }
+
+    // Inform new network
 
     return newNeuralNetwork
 }

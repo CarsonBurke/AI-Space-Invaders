@@ -45,3 +45,18 @@ Line.prototype.createEl = function() {
     network.svg.appendChild(el)
     line.el = el
 }
+
+Line.prototype.updateVisual = function() {
+
+    const line = this
+    const network = networks[line.networkID]
+    const el = line.el
+
+    if (line.connected && line.perceptron1.activateValue > 0) {
+
+        el.style.stroke = network.activeColor
+        return
+    }
+    
+    el.style.stroke = network.inactiveColor
+}

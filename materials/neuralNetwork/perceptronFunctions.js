@@ -37,24 +37,54 @@ Perceptron.prototype.mutateWeights = function() {
 
     perceptron.weights = newWeights
 }
-Perceptron.prototype.createWeights = function(inputs) {
+
+Perceptron.prototype.updateVisual = function() {
 
     const perceptron = this
     const network = networks[perceptron.networkID]
 
-    // Create one weight perceptron in previous layer
+    // If perceptron's activateValue is 0
 
-    perceptron.weights = []
+    if (perceptron.activateValue == 0) {
 
-    // Find previous layer
+        // Display 0
 
-    let iterations = 1
+        perceptron.visual.innerText = 0
 
-    // If layerName is 0
+        // Style outline
+
+        perceptron.visual.style.outlineColor = network.inactiveColor
+
+        // Iterate
+
+        return
+    }
+
+    // Style outline
+
+    perceptron.visual.style.outlineColor = network.activeColor
+
+    // Show perceptrons activateValue
+
+    perceptron.visual.innerText = (perceptron.activateValue).toFixed(2)
+    return
+}
+
+Perceptron.prototype.findWeightCount = function(inputs) {
+
+    const perceptron = this
+    const network = networks[perceptron.networkID]
+
+    // Config weightCount with an account for the bias
+
+    let weightCount = 1
+
+    // If perceptron's layerName is 0
 
     if (perceptron.layerName == 0) {
 
-        iterations += inputs.length
+        weightCount += inputs.length
+        return weightCount
     }
 
     // If perceptron's layerName is more than 0
@@ -70,23 +100,37 @@ Perceptron.prototype.createWeights = function(inputs) {
         let previousLayerPerceptronCount = Object.keys(previousLayer.perceptrons).length
 
         // Change iterations to number of perceptrons in previous layer
-
-        iterations += previousLayerPerceptronCount
+        
+        weightCount += previousLayerPerceptronCount
+        return weightCount
     }
+}
+
+Perceptron.prototype.createWeights = function(inputs) {
+
+    const perceptron = this
+    const network = networks[perceptron.networkID]
+
+    // Create one weight perceptron in previous layer
+
+    perceptron.weights = []
+
+    const weightCount = perceptron.findWeightCount(inputs)
 
     // Iterate for number of perceptrons in previous layer
 
-    for (let i = 0; i < iterations; i++) {
+    for (let i = 0; i < weightCount; i++) {
 
         // Get a random value relative to the size of learningRate
 
         let value = Math.random() * network.learningRate
 
         // Add value to weights
-
+        
         perceptron.weights.push(value)
     }
 }
+
 Perceptron.prototype.updateWeights = function() {
 
     const perceptron = this
@@ -100,16 +144,17 @@ Perceptron.prototype.updateWeights = function() {
     for (const input of perceptron.inputs) {
 
         // Find weight corresponding to input
-
+        
         const weight = perceptron.weights[i]
-
+        
         // Assign weight to input and add value to weightResults
-
+        
         perceptron.weightResults.push(input * weight)
 
         i++
     }
 }
+
 Perceptron.prototype.transfer = function() {
 
     const perceptron = this
@@ -122,6 +167,7 @@ Perceptron.prototype.transfer = function() {
 
     for (let weightResult of perceptron.weightResults) perceptron.transferValue += weightResult
 }
+
 Perceptron.prototype.activate = function() {
 
     const perceptron = this
@@ -130,6 +176,7 @@ Perceptron.prototype.activate = function() {
 
     perceptron.activateValue = Math.max(perceptron.transferValue, 0)
 }
+
 Perceptron.prototype.run = function(inputs) {
 
     const perceptron = this
@@ -139,7 +186,7 @@ Perceptron.prototype.run = function(inputs) {
     perceptron.inputs = inputs
 
     // Run commands to convert the inputs into an activateValue
-
+    
     perceptron.updateWeights()
     perceptron.transfer()
     perceptron.activate()
